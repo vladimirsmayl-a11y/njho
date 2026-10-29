@@ -1,0 +1,128 @@
+
+> lvs-frontend@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.15
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1628ms
+ ○ Compiling / ...
+ ✓ Compiled / in 4.6s (1315 modules)
+ GET / 200 in 4756ms
+ GET / 200 in 58ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 546ms (1314 modules)
+ GET / 200 in 161ms
+ ✓ Compiled /icon.svg in 233ms (693 modules)
+ GET /icon.svg?b6fe2604ff3efb7d 200 in 280ms
+ GET / 200 in 95ms
+ ✓ Compiled /middleware in 241ms (72 modules)
+ ✓ Compiled /dashboard in 420ms (1363 modules)
+ ✓ Compiled /dashboard/trackers in 247ms (1375 modules)
+ ✓ Compiled /admin in 334ms (1353 modules)
+ ✓ Compiled /dashboard/settings in 266ms (1359 modules)
+ ✓ Compiled /dashboard/marathons in 247ms (1365 modules)
+ ✓ Compiled /dashboard/journal in 284ms (1373 modules)
+ ○ Compiling /_error ...
+ GET /login 500 in 29ms
+ GET /dashboard 500 in 30ms
+ GET /dashboard 500 in 218ms
+ GET /login 500 in 217ms
+ GET /dashboard 500 in 9ms
+ GET /dashboard 500 in 7ms
+ GET /login 500 in 440ms
+ GET /dashboard 500 in 376ms
+ GET /login 500 in 391ms
+ GET /dashboard 500 in 314ms
+ GET /login 500 in 334ms
+ GET /dashboard 500 in 237ms
+ GET /login 500 in 286ms
+ GET /dashboard 500 in 198ms
+ GET /login 500 in 290ms
+ GET /dashboard 500 in 190ms
+ GET /login 500 in 307ms
+ GET /dashboard 500 in 221ms
+ GET /login 500 in 380ms
+ GET /dashboard 500 in 307ms
+ ✓ Compiled /_error in 69ms (72 modules)
+ GET /login 500 in 514ms
+ GET /dashboard 500 in 547ms
+ GET /login 500 in 414ms
+ GET /dashboard 500 in 431ms
+ GET /dashboard 500 in 10ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 211ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 210ms
+ GET /_next/static/chunks/fallback/main.js 500 in 210ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 4ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 4ms
+ ○ Compiling /_not-found ...
+ GET /dashboard 500 in 5ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 6ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 5ms
+ GET /_next/static/chunks/fallback/main.js 500 in 6ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 4ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 4ms
+ ✓ Compiled /_not-found in 32ms (72 modules)
+ GET /dashboard 500 in 12ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 257ms
+ GET /_next/static/chunks/fallback/main.js 500 in 256ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 256ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 202ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 202ms
+ ○ Compiling /_not-found ...
+ GET / 500 in 35ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 9ms
+ GET /_next/static/chunks/fallback/main.js 500 in 11ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 11ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 12ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 11ms
+ GET /dashboard 500 in 9ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 10ms
+ GET /_next/static/chunks/fallback/main.js 500 in 9ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 7ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 5ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 6ms
+ GET /login 500 in 8ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 7ms
+ GET /_next/static/chunks/fallback/main.js 500 in 8ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 9ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 7ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 6ms
+ GET / 500 in 6ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 7ms
+ GET /_next/static/chunks/fallback/main.js 500 in 6ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 6ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 4ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 5ms
+ GET / 500 in 6ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 7ms
+ GET /_next/static/chunks/fallback/main.js 500 in 8ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 7ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 4ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 4ms
+ GET / 500 in 6ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 6ms
+ GET /_next/static/chunks/fallback/main.js 500 in 5ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 6ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 5ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 4ms
+ GET / 500 in 37ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 9ms
+ GET /_next/static/chunks/fallback/main.js 500 in 7ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 6ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 7ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 6ms
+ GET / 500 in 22ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 8ms
+ GET /_next/static/chunks/fallback/main.js 500 in 10ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 8ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 8ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 7ms
+ GET / 500 in 18ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 6ms
+ GET /_next/static/chunks/fallback/main.js 500 in 5ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 6ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 4ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 4ms

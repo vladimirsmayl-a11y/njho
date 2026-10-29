@@ -1,0 +1,368 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   ЛВС — дизайн-система
+   Графит #0A0A0A · стекло #141416 · неоновый лайм #A8FF35
+   ============================================================ */
+
+@layer base {
+  :root {
+    --bg: #0a0a0a;
+    --surface: #141416;
+    --surface-hover: #1c1c1f;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-focus: rgba(168, 255, 53, 0.35);
+    --text: #ffffff;
+    --muted: #8e8e93;
+    --danger: #ff453a;
+    --premium: #d4af37;
+    --primary: #a8ff35;
+    --primary-glow: rgba(168, 255, 53, 0.25);
+    --radius: 24px;
+
+    --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  html {
+    background-color: var(--bg);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv02', 'cv03', 'cv11', 'cv12';
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+
+  ::selection {
+    background: var(--primary);
+    color: var(--bg);
+  }
+
+  :focus-visible {
+    outline: none;
+  }
+
+  /* Кастомный скроллбар — тонкий, тёмный */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #2a2a2e transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #242427;
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3a3a40;
+    background-clip: padding-box;
+  }
+}
+
+@layer components {
+  .container-lvs,
+  .container-x {
+    @apply mx-auto w-full max-w-[1360px] px-5 sm:px-7 lg:px-10;
+  }
+
+  /* Навигация лендинга */
+  .nav-link {
+    @apply text-[13px] font-medium text-white/55 transition-colors duration-200 hover:text-white;
+  }
+
+  /* ---------- стеклянная карточка ---------- */
+  .card {
+    @apply relative rounded-[24px] border border-white/[0.08] bg-surface/80 backdrop-blur-xl;
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+  }
+  .card-hover {
+    @apply transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-white/[0.14] hover:bg-surface-hover/80 hover:shadow-[0_20px_50px_-26px_rgba(0,0,0,0.9)];
+  }
+  .card-glow:hover {
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+      0 24px 70px -28px rgba(168, 255, 53, 0.22);
+  }
+
+  /* ---------- кнопки ---------- */
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+      transition-all duration-200 ease-out hover:scale-[0.97] active:scale-[0.95]
+      focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg
+      disabled:pointer-events-none disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply bg-white text-bg font-semibold hover:bg-white/90 hover:shadow-[0_18px_40px_-18px_rgba(255,255,255,0.45)];
+  }
+  .btn-ghost {
+    @apply border border-white/[0.12] text-white hover:border-white/[0.24] hover:bg-white/[0.05];
+  }
+  .btn-danger {
+    @apply border border-danger/40 text-danger hover:border-danger hover:bg-danger/[0.12] hover:shadow-[0_0_24px_-6px_rgba(255,69,58,0.35)];
+  }
+
+  /* ---------- поля ---------- */
+  .input {
+    @apply w-full rounded-[16px] border border-white/[0.1] bg-white/[0.04] px-4 py-3.5 text-sm text-white
+      outline-none transition-all duration-200 placeholder:text-white/25
+      hover:border-white/[0.18] focus:border-white/45 focus:bg-white/[0.06]
+      focus:ring-4 focus:ring-white/[0.06];
+  }
+
+  .glass {
+    @apply rounded-[20px] border border-white/[0.08] bg-surface/70 backdrop-blur-xl;
+  }
+
+  /* ---------- типографика ---------- */
+  .display {
+    font-family: var(--font-display);
+    @apply font-extrabold tracking-[-0.03em] text-white;
+  }
+  .section-title {
+    @apply display text-[30px] leading-[1.06] sm:text-[40px] md:text-[52px];
+  }
+  .section-subtitle {
+    @apply mx-auto mt-4 max-w-2xl text-[14px] leading-relaxed text-muted sm:text-[16px];
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2.5 rounded-full border border-white/[0.12] bg-white/[0.04] px-4 py-1.5
+      text-[10px] font-semibold uppercase tracking-[0.22em] text-muted backdrop-blur-lg;
+  }
+  .eyebrow-dot {
+    @apply h-1.5 w-1.5 rounded-full bg-primary/80;
+  }
+  .page-title {
+    @apply font-display text-[28px] font-extrabold leading-[1.05] tracking-[-0.03em] text-white sm:text-[34px];
+  }
+  .page-subtitle {
+    @apply mt-2 max-w-xl text-[13.5px] leading-relaxed text-muted sm:text-sm;
+  }
+  .label {
+    @apply text-[10.5px] font-semibold uppercase tracking-[0.18em] text-muted;
+  }
+  .numeric {
+    font-variant-numeric: tabular-nums;
+    @apply tabular-nums;
+  }
+
+  /* ---------- навигация ---------- */
+  .nav-item {
+    @apply relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-[13.5px] font-medium
+      text-muted transition-all duration-200 hover:bg-white/[0.04] hover:text-white;
+  }
+  .nav-item.active {
+    @apply bg-white/[0.06] text-white;
+  }
+  .nav-item.active::before {
+    content: '';
+    @apply absolute left-0 top-1/2 h-4 w-[2px] -translate-y-1/2 rounded-full bg-white/60;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em];
+  }
+  .badge-pro {
+    @apply border border-white/[0.14] bg-white/[0.05] text-white/75;
+  }
+  .badge-premium {
+    @apply border border-premium/35 bg-premium/[0.08] text-premium;
+  }
+  .badge-free {
+    @apply border border-white/[0.12] bg-white/[0.03] text-muted;
+  }
+  .badge-danger {
+    @apply border border-danger/35 bg-danger/[0.08] text-danger;
+  }
+
+  .divider {
+    @apply h-px w-full bg-white/[0.06];
+  }
+
+  /* ---------- декоративный фон ---------- */
+  .app-glow {
+    background:
+      radial-gradient(900px 420px at 18% -8%, rgba(168, 255, 53, 0.03), transparent 65%),
+      radial-gradient(700px 380px at 100% 0%, rgba(255, 255, 255, 0.03), transparent 60%);
+  }
+
+  .grid-lines {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* ---------- анимации ---------- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes checkDraw {
+  0% {
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+.animate-check-draw {
+  animation: checkDraw 0.4s ease-out forwards;
+}
+
+@keyframes sparkPop {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+.animate-spark {
+  animation: sparkPop 0.6s ease-out both;
+}
+
+@keyframes firePulse {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 0 6px rgba(255, 90, 54, 0.35));
+  }
+  35% {
+    transform: scale(1.18) rotate(-4deg);
+    filter: drop-shadow(0 0 18px rgba(255, 90, 54, 0.65));
+  }
+  70% {
+    transform: scale(1.06) rotate(3deg);
+    filter: drop-shadow(0 0 12px rgba(255, 90, 54, 0.5));
+  }
+}
+.animate-fire {
+  animation: firePulse 2.6s ease-in-out infinite;
+}
+
+/* ---------- 3D-виджет серии ---------- */
+.widget-3d {
+  transform-style: preserve-3d;
+  perspective: 900px;
+}
+.widget-3d-inner {
+  transform: rotateX(8deg) rotateY(-6deg);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.widget-3d:hover .widget-3d-inner {
+  transform: rotateX(2deg) rotateY(0deg) translateY(-2px);
+}
+.widget-orbit {
+  animation: orbitFloat 7s ease-in-out infinite;
+}
+.widget-orbit-slow {
+  animation: orbitFloat 11s ease-in-out infinite reverse;
+}
+@keyframes orbitFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -7px, 12px);
+  }
+}
+@keyframes frostShimmer {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateX(-8%);
+  }
+  50% {
+    opacity: 0.75;
+    transform: translateX(8%);
+  }
+}
+.frost-shimmer {
+  animation: frostShimmer 5s ease-in-out infinite;
+}
+@keyframes dayPop {
+  0% {
+    transform: scale(0.86) rotateX(16deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.04) rotateX(-3deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotateX(0deg);
+    opacity: 1;
+  }
+}
+.day-pop {
+  animation: dayPop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes ringSweep {
+  from {
+    stroke-dashoffset: var(--dash);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

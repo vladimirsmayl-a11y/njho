@@ -1,0 +1,448 @@
+(node:6776) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\client-development-fallback\0.pack.gz_' -> 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\client-development-fallback\0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./components/ui.tsx
+Module parse failed: Duplicate export 'playSound' (612:9)
+|     }, this);
+| }
+> export { playSound };
+| 
+
+Import trace for requested module:
+./components/ui.tsx
+./app/login/page.tsx
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./components/ui.tsx
+Module parse failed: Duplicate export 'playSound' (611:9)
+|     }, this);
+| }
+> export { playSound };
+| 
+
+Import trace for requested module:
+./components/ui.tsx
+./app/login/page.tsx
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./components/ui.tsx
+Module parse failed: Duplicate export 'playSound' (611:9)
+|     }, this);
+| }
+> export { playSound };
+| 
+
+Import trace for requested module:
+./components/ui.tsx
+./app/login/page.tsx
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+[Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\server-development\7.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'C:\\Users\\compu\\OneDrive\\Desktop\\lvs\\frontend\\.next\\cache\\webpack\\server-development\\7.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\server-development\7.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'C:\\Users\\compu\\OneDrive\\Desktop\\lvs\\frontend\\.next\\cache\\webpack\\server-development\\7.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\server-development\7.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'C:\\Users\\compu\\OneDrive\\Desktop\\lvs\\frontend\\.next\\cache\\webpack\\server-development\\7.pack.gz'
+}
+[Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\server-development\9.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'C:\\Users\\compu\\OneDrive\\Desktop\\lvs\\frontend\\.next\\cache\\webpack\\server-development\\9.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\server-development\9.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'C:\\Users\\compu\\OneDrive\\Desktop\\lvs\\frontend\\.next\\cache\\webpack\\server-development\\9.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\server-development\9.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'C:\\Users\\compu\\OneDrive\\Desktop\\lvs\\frontend\\.next\\cache\\webpack\\server-development\\9.pack.gz'
+}
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\server-development\7.pack.gz'
+[Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\client-development\7.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'C:\\Users\\compu\\OneDrive\\Desktop\\lvs\\frontend\\.next\\cache\\webpack\\client-development\\7.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\client-development\7.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'C:\\Users\\compu\\OneDrive\\Desktop\\lvs\\frontend\\.next\\cache\\webpack\\client-development\\7.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\client-development\7.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'C:\\Users\\compu\\OneDrive\\Desktop\\lvs\\frontend\\.next\\cache\\webpack\\client-development\\7.pack.gz'
+}
+[Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\client-development\10.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'C:\\Users\\compu\\OneDrive\\Desktop\\lvs\\frontend\\.next\\cache\\webpack\\client-development\\10.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\client-development\10.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'C:\\Users\\compu\\OneDrive\\Desktop\\lvs\\frontend\\.next\\cache\\webpack\\client-development\\10.pack.gz'
+}
+ ⨯ unhandledRejection: [Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\client-development\10.pack.gz'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: 'C:\\Users\\compu\\OneDrive\\Desktop\\lvs\\frontend\\.next\\cache\\webpack\\client-development\\10.pack.gz'
+}
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\client-development\7.pack.gz'
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, stat 'C:\Users\compu\OneDrive\Desktop\lvs\frontend\.next\cache\webpack\edge-server-development\2.pack.gz'
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./app/globals.css:92:5
+Syntax error: C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css The `focus-visible:ring-primary/[0.5]` class does not exist. If `focus-visible:ring-primary/[0.5]` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 90 | [39m  [90m/* ---------- кнопки ---------- */[39m
+ [90m 91 | [39m  [33m.btn[39m [33m{[39m
+[1m[31m>[39m[22m[90m 92 | [39m    [36m@apply[39m inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium
+ [90m    | [39m    [1m[31m^[39m[22m
+ [90m 93 | [39m      transition-all duration-200 ease-out hover[33m:[39mscale-[33m[[39m0.96[33m][39m active[33m:[39mscale-[33m[[39m0.94[33m][39m
+ [90m 94 | [39m      focus-visible[33m:[39moutline-none focus-visible[33m:[39mring-2 focus-visible[33m:[39mring-primary/[33m[[39m0.5[33m][39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!C:\Users\compu\OneDrive\Desktop\lvs\frontend\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
