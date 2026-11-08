@@ -9,7 +9,19 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_db
 from app.deps import require_subscriber
-from app.models import DayClose, Habit, HabitLog, Marathon, MarathonMember, Post, Task, User, today_utc
+from app.models import (
+    DayClose,
+    Habit,
+    HabitLog,
+    Marathon,
+    MarathonMember,
+    MarathonReport,
+    MarathonTask,
+    Post,
+    Task,
+    User,
+    today_utc,
+)
 from app.schemas import HabitIn, HabitLogIn, TaskIn, TaskPatch
 
 router = APIRouter(tags=["tracker"], dependencies=[Depends(require_subscriber)])
@@ -165,6 +177,18 @@ async def dashboard(today: Date = Query(...), user: User = Depends(require_subsc
 
     done_today, total_today = _day_progress(tasks, habits, logs, today)
     day_tasks = tasks.get(today, [])
+    yesterday = today - timedelta(days=1)
+    frozen_yesterday = (
+        await db.scalar(
+            select(DayClose.id).where(
+                DayClose.user_id == user.id,
+                DayClose.day == yesterday,
+                DayClose.tasks_total == 0,
+                DayClose.habits_total == 0,
+            )
+        )
+        is not None
+    )
     week = []
     for i in range(6, -1, -1):
         d = today - timedelta(days=i)
@@ -206,6 +230,7 @@ async def dashboard(today: Date = Query(...), user: User = Depends(require_subsc
         "habits_done": _day_stats(habits, logs, today)[0],
         "percent": round(done_today * 100 / total_today) if total_today else 0,
         "day_closed": bool(total_today and done_today == total_today),
+        "frozen_yesterday": frozen_yesterday,
         "freeze_count": user.freeze_count or 0,
         "week": week,
         "tasks_total": len(day_tasks),
@@ -213,6 +238,141 @@ async def dashboard(today: Date = Query(...), user: User = Depends(require_subsc
         "active_marathons": marathons or 0,
         "posts": [{"id": p.id, "title": p.title, "body": p.body, "created_at": p.created_at} for p in posts],
     }
+
+
+@router.get("/stats/tasks")
+async def stats_tasks(user: User = Depends(require_subscriber), db: AsyncSession = Depends(get_db)):
+    total = await db.scalar(select(func.count()).select_from(Task).where(Task.user_id == user.id))
+    done = await db.scalar(
+        select(func.count()).select_from(Task).where(Task.user_id == user.id, Task.done == True)  # noqa: E712
+    )
+    closed_days = (
+        await db.scalars(select(DayClose.day).where(DayClose.user_id == user.id).order_by(DayClose.day))
+    ).all()
+    days = set(closed_days)
+    streak = streak_ending(days, today_utc())
+    best, run, previous = 0, 0, None
+    for day in closed_days:
+        run = run + 1 if previous is not None and day == previous + timedelta(days=1) else 1
+        best = max(best, run)
+        previous = day
+    return {
+        "total_done": done or 0,
+        "total_tasks": total or 0,
+        "closed_days": len(closed_days),
+        "streak": streak,
+        "best_streak": best,
+    }
+
+
+@router.get("/stats/marathons")
+async def stats_marathons(user: User = Depends(require_subscriber), db: AsyncSession = Depends(get_db)):
+    today = today_utc()
+    marathons = (
+        await db.scalars(
+            select(Marathon)
+            .join(MarathonMember, MarathonMember.marathon_id == Marathon.id)
+            .where(MarathonMember.user_id == user.id, Marathon.is_published == True)  # noqa: E712
+            .order_by(Marathon.starts_on.desc())
+        )
+    ).all()
+    result = []
+    for marathon in marathons:
+        total_tasks = await db.scalar(
+            select(func.count()).select_from(MarathonTask).where(MarathonTask.marathon_id == marathon.id)
+        )
+        approved = await db.scalar(
+            select(func.count())
+            .select_from(MarathonReport)
+            .join(MarathonTask, MarathonTask.id == MarathonReport.task_id)
+            .where(
+                MarathonTask.marathon_id == marathon.id,
+                MarathonReport.user_id == user.id,
+                MarathonReport.status == "approved",
+            )
+        )
+        total = total_tasks or 0
+        done = approved or 0
+        progress = round(done * 100 / total) if total else 0
+        if total and done >= total:
+            status = "completed"
+        elif marathon.starts_on <= today <= marathon.ends_on:
+            status = "active"
+        else:
+            status = "joined"
+        result.append(
+            {
+                "id": marathon.id,
+                "title": marathon.title,
+                "progress": progress,
+                "status": status,
+            }
+        )
+    return result
+
+
+@router.get("/stats/achievements")
+async def stats_achievements(user: User = Depends(require_subscriber), db: AsyncSession = Depends(get_db)):
+    closed_days = (
+        await db.scalars(select(DayClose.day).where(DayClose.user_id == user.id).order_by(DayClose.day))
+    ).all()
+    milestones: dict[int, Date] = {}
+    best, run, previous = 0, 0, None
+    for day in closed_days:
+        run = run + 1 if previous is not None and day == previous + timedelta(days=1) else 1
+        best = max(best, run)
+        for threshold in (7, 30, 100):
+            if run == threshold and threshold not in milestones:
+                milestones[threshold] = day
+        previous = day
+
+    completed_marathons = await db.scalar(
+        select(func.count())
+        .select_from(MarathonMember)
+        .join(Marathon, Marathon.id == MarathonMember.marathon_id)
+        .where(MarathonMember.user_id == user.id, Marathon.ends_on < today_utc())
+    )
+
+    def fmt(day: Date | None) -> str | None:
+        return day.strftime("%d.%m.%Y") if day else None
+
+    return [
+        {
+            "id": "first-step",
+            "title": "«Первый шаг»",
+            "description": "Закрыт первый день полностью",
+            "earned": bool(closed_days),
+            "earned_at": fmt(closed_days[0] if closed_days else None),
+        },
+        {
+            "id": "week-streak",
+            "title": "«Неделя без пропусков»",
+            "description": "7 дней подряд",
+            "earned": 7 in milestones,
+            "earned_at": fmt(milestones.get(7)),
+        },
+        {
+            "id": "month-streak",
+            "title": "«Месяц без пропусков»",
+            "description": "30 дней подряд",
+            "earned": 30 in milestones,
+            "earned_at": fmt(milestones.get(30)),
+        },
+        {
+            "id": "hundred-days",
+            "title": "«Сто закрытых дней»",
+            "description": "100 дней в системе",
+            "earned": len(closed_days) >= 100,
+            "earned_at": fmt(closed_days[99] if len(closed_days) >= 100 else None),
+        },
+        {
+            "id": "marathon-finisher",
+            "title": "«Финишёр»",
+            "description": "Завершён первый марафон",
+            "earned": bool(completed_marathons),
+            "earned_at": None,
+        },
+    ]
 
 
 @router.post("/streak/freeze")

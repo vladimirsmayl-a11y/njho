@@ -258,10 +258,10 @@ export default function SettingsPage() {
               </span>
               <div>
                 <p className="label">{t('settings.quickStart')}</p>
-                <h2 className="font-display text-[15px] font-bold text-white">Четыре шага</h2>
+                <h2 className="font-display text-[17px] font-bold tracking-[-0.02em] text-white">Четыре шага</h2>
               </div>
             </div>
-            <p className="mt-3 text-[11px] leading-relaxed text-muted">
+            <p className="mt-3 text-[12px] leading-relaxed text-white/70">
               Короткая памятка на первый месяц. Вернитесь сюда, если собьётесь с ритма.
             </p>
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
@@ -299,14 +299,14 @@ export default function SettingsPage() {
                     onClick={() => playSound('click')}
                     className="group flex items-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3.5 py-3 transition-colors hover:border-white/[0.14] hover:bg-white/[0.04]"
                   >
-                    <span className="numeric mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/[0.1] text-[10px] text-white/40">
+                    <span className="numeric mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/[0.1] text-[11px] text-white/40">
                       {index + 1}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="flex items-center gap-1.5 text-[12px] font-medium text-white">
+                      <p className="flex items-center gap-1.5 font-display text-[13px] font-semibold text-white">
                         <Icon className="h-3.5 w-3.5 text-white/40" /> {step.title}
                       </p>
-                      <p className="mt-0.5 text-[10px] leading-relaxed text-muted">{step.description}</p>
+                      <p className="mt-0.5 text-[11px] leading-relaxed text-white/50">{step.description}</p>
                     </div>
                     <ChevronRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-white/15 transition-all group-hover:translate-x-0.5 group-hover:text-white/50" />
                   </Link>

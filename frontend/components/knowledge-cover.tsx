@@ -3,10 +3,12 @@
 import { Check, Layers } from 'lucide-react';
 import { categoryOf, type KnowledgeArticle } from '@/lib/knowledge';
 import { cn } from '@/lib/utils';
+import { generateKnowledgeImage } from '@/lib/knowledge-images';
 
 /**
- * 3D-обложка статьи. Для «Привычек» — стопка карточек привычки,
- * для остальных категорий — наклонная стеклянная плоскость.
+ * 3D-обложка статьи с уникальным фоновым изображением в стиле обложек марафонов:
+ * тёмный фон, премиальные 3D-объекты, неоновый свет. Изображение генерируется
+ * индивидуально для каждой статьи на основе её категории и номера.
  */
 export function KnowledgeCover({
   article,
@@ -20,6 +22,7 @@ export function KnowledgeCover({
   const category = categoryOf(article);
   const habits = article.category === 'habits';
   const hero = variant === 'hero';
+  const imageUrl = generateKnowledgeImage(article.category, article.n, article.title);
 
   return (
     <div
@@ -30,6 +33,16 @@ export function KnowledgeCover({
       )}
       aria-hidden
     >
+      {/* Фоновое изображение статьи (уникальное для каждой) */}
+      <img
+        src={imageUrl}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover"
+        decoding="async"
+        loading="lazy"
+        aria-hidden
+      />
+      {/* Тёмный наложенный градиент (как у обложек марафонов) */}
       <div className={cn('absolute inset-0 bg-gradient-to-br', category.gradient)} />
       <div
         className="absolute inset-0 opacity-[0.14]"

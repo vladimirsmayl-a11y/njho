@@ -41,9 +41,8 @@ const CATEGORY_ICONS = {
   goals: Target,
   focus: Compass,
   identity: UserRound,
-  recovery: Moon,
+  sleep: Moon,
   system: Settings2,
-  mastery: Award,
 } as const;
 
 const PAGE = 12;

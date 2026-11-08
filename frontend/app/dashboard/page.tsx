@@ -1,23 +1,19 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   ArrowUpRight,
+  BarChart3,
   CalendarDays,
   Check,
-  CheckCircle2,
   Flame,
-  Gauge,
   Plus,
   Snowflake,
-  Sparkles,
-  Trophy,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import {
   AppShell,
-  Badge,
   Button,
   Card,
   Confetti,
@@ -33,15 +29,7 @@ import {
 import { useAuth } from '@/components/auth-provider';
 import { api, body } from '@/lib/api';
 import { demoDashboard, demoHabits, demoTasks, demoUser } from '@/lib/demo';
-import {
-  averageScore,
-  lastDays,
-  loadTempo,
-  tempoMeta,
-  tempoZone,
-  todayISO,
-  type TempoMap,
-} from '@/lib/tempo';
+import { todayISO } from '@/lib/tempo';
 import { useI18n } from '@/lib/i18n';
 import { cn, plural } from '@/lib/utils';
 
@@ -74,6 +62,7 @@ type Stats = {
   tasks_done: number;
   tasks_total: number;
   day_closed: boolean;
+  frozen_yesterday: boolean;
 };
 
 const HABIT_EMOJI = ['🌅', '🏋️', '📖', '✍️', '🍃', '💧', '🧘', '🚶'];
@@ -132,40 +121,55 @@ function Ring({ value }: { value: number }) {
   );
 }
 
-function SeriesOrb({ closed, burst }: { closed: boolean; burst: number }) {
+type SeriesState = 'idle' | 'closed' | 'frozen';
+
+function SeriesOrb({ state, burst }: { state: SeriesState; burst: number }) {
+  const isClosed = state === 'closed';
+  const isFrozen = state === 'frozen';
+
   return (
     <div className="widget-3d relative h-[74px] w-[74px] shrink-0">
       <div
         className="absolute inset-0 rounded-full blur-xl"
-        style={{ background: closed ? 'rgba(168,255,53,0.32)' : 'rgba(255,90,54,0.3)' }}
+        style={{
+          background: isClosed
+            ? 'rgba(255,90,54,0.35)'
+            : isFrozen
+              ? 'rgba(127,200,255,0.35)'
+              : 'rgba(255,255,255,0.06)',
+        }}
       />
       <motion.div
-        key={`${closed}-${burst}`}
+        key={`${state}-${burst}`}
         animate={
           burst
             ? { scale: [0.9, 1.18, 1], rotate: [0, -8, 0] }
-            : closed
+            : isClosed
               ? { scale: [1, 1.05, 1] }
               : { y: [0, -3, 0] }
         }
         transition={{ duration: burst ? 0.8 : 3.4, repeat: burst ? 0 : Infinity, ease: 'easeInOut' }}
         className={cn(
           'absolute inset-1 rounded-full border',
-          closed
-            ? 'border-white/40 bg-[radial-gradient(circle_at_32%_26%,#ffffff,#dfffb9_40%,#a8ff35_72%,#4e7a12)]'
-            : 'border-[#FF5A36]/30 bg-[radial-gradient(circle_at_32%_26%,#ffb199,#ff6b4a_40%,#b32d14_74%,#3d0d05)]',
+          isClosed
+            ? 'border-[#FF5A36]/60 bg-[radial-gradient(circle_at_32%_26%,#ffffff,#ffb199_40%,#FF5A36_72%,#b32d14)] text-danger'
+            : isFrozen
+              ? 'border-[#7FC8FF]/60 bg-[radial-gradient(circle_at_32%_26%,#ffffff,#b3e8ff_40%,#7FC8FF_72%,#1d5a8a)] text-primary'
+              : 'border-white/[0.12] bg-[radial-gradient(circle_at_32%_26%,#ffffff,#f5f5f5_40%,#d4d4d4_72%,#666666)] text-white/50',
         )}
       >
         <div className="absolute inset-0 flex items-center justify-center">
-          {closed ? (
-            <Sparkles className="h-6 w-6 text-bg/70" strokeWidth={1.4} />
+          {isClosed ? (
+            <Flame className="h-8 w-8 animate-fire text-[#FF5A36]" fill="currentColor" strokeWidth={1.4} />
+          ) : isFrozen ? (
+            <Snowflake className="h-7 w-7 text-[#7FC8FF]" strokeWidth={1.4} />
           ) : (
-            <Flame className="h-7 w-7 animate-fire text-white/90" fill="currentColor" strokeWidth={1.2} />
+            <Flame className="h-7 w-7 text-white/40" fill="currentColor" strokeWidth={1.2} />
           )}
         </div>
       </motion.div>
-      <div className="widget-orbit absolute -inset-1 rounded-full border border-white/15" style={{ transform: 'rotateX(66deg)' }} />
-      <div className="widget-orbit-slow absolute -inset-2.5 rounded-full border border-white/[0.08]" style={{ transform: 'rotateY(60deg)' }} />
+      <div className="widget-orbit absolute -inset-1 rounded-full border" style={{ transform: 'rotateX(66deg)' }} />
+      <div className="widget-orbit-slow absolute -inset-2.5 rounded-full border" style={{ transform: 'rotateY(60deg)' }} />
     </div>
   );
 }
@@ -181,6 +185,7 @@ export default function DashboardPage() {
     tasks_done: 0,
     tasks_total: 0,
     day_closed: false,
+    frozen_yesterday: false,
   });
   const [tasks, setTasks] = useState<Task[]>([]);
   const [habits, setHabits] = useState<Habit[]>([]);
@@ -188,7 +193,6 @@ export default function DashboardPage() {
   const [celebrate, setCelebrate] = useState(false);
   const [fireBurst, setFireBurst] = useState(0);
   const [justClosed, setJustClosed] = useState(false);
-  const [tempo, setTempo] = useState<TempoMap>({});
   const [addOpen, setAddOpen] = useState(false);
   const [habitOpen, setHabitOpen] = useState(false);
   const [title, setTitle] = useState('');
@@ -199,10 +203,6 @@ export default function DashboardPage() {
   const closedRef = useRef(false);
 
   const today = todayISO();
-
-  useEffect(() => {
-    setTempo(loadTempo());
-  }, []);
 
   useEffect(() => {
     if (loading) return;
@@ -232,6 +232,7 @@ export default function DashboardPage() {
         tasks_done: done,
         tasks_total: nextTasks.length,
         day_closed: closed,
+        frozen_yesterday: false,
       });
       setTasksLoading(false);
       return () => {
@@ -252,6 +253,7 @@ export default function DashboardPage() {
             tasks_done: number;
             tasks_total: number;
             day_closed?: boolean;
+            frozen_yesterday?: boolean;
           }>(`/dashboard?today=${today}`),
           api<RemoteHabit[]>(`/habits?date=${today}&days=28`),
         ]);
@@ -282,6 +284,7 @@ export default function DashboardPage() {
           tasks_done: remote.tasks_done,
           tasks_total: remote.tasks_total,
           day_closed: remote.day_closed ?? (remote.tasks_total > 0 && remote.tasks_done === remote.tasks_total),
+          frozen_yesterday: remote.frozen_yesterday ?? false,
         });
       } catch {
         if (alive) {
@@ -322,22 +325,8 @@ export default function DashboardPage() {
   const streak = stats.streak;
   const best = stats.best_streak;
   const dayClosed = stats.day_closed;
+  const frozen = stats.frozen_yesterday;
   const freeze = stats.freeze_count;
-
-  const todayScore = tempo[today];
-  const average = useMemo(() => averageScore(tempo, 30), [tempo]);
-  const last14 = useMemo(
-    () => lastDays(14).map((day) => ({ day, score: tempo[day] })),
-    [tempo],
-  );
-  const productiveDays = useMemo(
-    () =>
-      lastDays(30).filter((day) => {
-        const score = tempo[day];
-        return typeof score === 'number' && score <= 4;
-      }).length,
-    [tempo],
-  );
 
   const celebrateDay = () => {
     setCelebrate(true);
@@ -379,6 +368,7 @@ export default function DashboardPage() {
           tasks_done: res.tasks_done,
           tasks_total: res.tasks_total,
           day_closed: res.day_closed,
+          frozen_yesterday: frozen,
         });
         if (res.day_closed && !closedRef.current) {
           closedRef.current = true;
@@ -522,49 +512,32 @@ export default function DashboardPage() {
   };
 
   const applyFreeze = async () => {
-    if (freeze <= 0 || dayClosed) return;
+    if (freeze <= 0 || dayClosed || frozen) return;
     setFreezeBusy(true);
     if (!demo) {
       try {
         const res = await api<{ freeze_count: number }>('/streak/freeze', { method: 'POST' });
-        setStats((prev) => ({ ...prev, freeze_count: res.freeze_count, streak: prev.streak + 1, day_closed: true }));
+        setStats((prev) => ({
+          ...prev,
+          freeze_count: res.freeze_count,
+          streak: prev.streak + 1,
+          frozen_yesterday: true,
+        }));
         toast('Заморозка применена', { description: 'Серия сохранена за вчерашний день.', tone: 'success' });
       } catch {
         toast('Не удалось применить заморозку', { tone: 'danger' });
       }
     } else {
-      setStats((prev) => ({ ...prev, freeze_count: Math.max(0, prev.freeze_count - 1), streak: prev.streak + 1, day_closed: true }));
+      setStats((prev) => ({
+        ...prev,
+        freeze_count: Math.max(0, prev.freeze_count - 1),
+        streak: prev.streak + 1,
+        frozen_yesterday: true,
+      }));
       toast('Заморозка применена', { description: 'Серия сохранена.', tone: 'success' });
     }
     setFreezeBusy(false);
   };
-
-  const achievement = useMemo(() => {
-    if (best >= 30) {
-      return {
-        title: '«Месяц без пропусков»',
-        note: `${best} ${plural(best, 'день', 'дня', 'дней')} подряд · награда Premium-уровня`,
-      };
-    }
-    if (best >= 7) {
-      return {
-        title: '«Неделя без пропусков»',
-        note: `${best} ${plural(best, 'день', 'дня', 'дней')} подряд · награда Pro-уровня`,
-      };
-    }
-    if (best >= 1) {
-      return {
-        title: '«Первый шаг»',
-        note: `Лучшая серия — ${best} ${plural(best, 'день', 'дня', 'дней')}`,
-      };
-    }
-    return {
-      title: '«Первый шаг»',
-      note: 'Закройте день полностью — достижение появится здесь',
-    };
-  }, [best]);
-
-  const scoreMeta = todayScore ? tempoMeta[tempoZone(todayScore)] : null;
 
   return (
     <AppShell>
@@ -587,6 +560,9 @@ export default function DashboardPage() {
           subtitle={t('dash.subtitle')}
           actions={
             <>
+              <Button variant="ghost" href="/tracker/stats">
+                <BarChart3 className="h-4 w-4" /> {t('nav.stats')}
+              </Button>
               <Button variant="ghost" href="/tracker/12-weeks">
                 <CalendarDays className="h-4 w-4" /> {t('dash.quarter')}
               </Button>
@@ -603,48 +579,62 @@ export default function DashboardPage() {
             <Card
               className={cn(
                 'relative flex h-full min-h-[164px] flex-col justify-between overflow-hidden p-5',
-                dayClosed ? 'border-white bg-white text-bg' : 'border-[#FF5A36]/25 bg-[#140d0c]',
+                dayClosed
+                  ? 'border-[#FF5A36]/40 bg-[#1a0a08]'
+                  : frozen
+                    ? 'border-[#7FC8FF]/40 bg-[#0a141a]'
+                    : 'border-white/[0.12] bg-[#0f0f10]',
               )}
             >
               <div
                 className="pointer-events-none absolute -right-12 -top-16 h-44 w-44 rounded-full blur-3xl"
-                style={{ background: dayClosed ? 'rgba(168,255,53,0.18)' : 'rgba(255,90,54,0.18)' }}
+                style={{
+                  background: dayClosed
+                    ? 'rgba(255,90,54,0.2)'
+                    : frozen
+                      ? 'rgba(127,200,255,0.2)'
+                      : 'rgba(255,255,255,0.03)',
+                }}
               />
               <div className="relative flex items-start justify-between gap-3">
                 <div>
-                  <p className={cn('label', dayClosed && 'text-bg/50')}>{t('dash.streak')}</p>
+                  <p className={cn('label', dayClosed ? 'text-[#FF5A36]/60' : frozen ? 'text-[#7FC8FF]/60' : 'text-white/50')}>
+                    {t('dash.streak')}
+                  </p>
                   <div className="mt-2 flex items-baseline gap-1.5">
                     {dayClosed ? (
                       <motion.span
                         initial={{ opacity: 0, scale: 0.92 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="numeric font-display text-[30px] font-extrabold leading-none tracking-[-0.03em]"
+                        className="numeric font-display text-[30px] font-extrabold leading-none tracking-[-0.03em] text-[#FF5A36]"
                       >
                         День {streak}
                       </motion.span>
                     ) : (
                       <>
-                        <span className="numeric font-display text-[32px] font-extrabold leading-none">{streak}</span>
-                        <span className={cn('text-[12px]', dayClosed ? 'text-bg/50' : 'text-white/45')}>
+                        <span className="numeric font-display text-[32px] font-extrabold leading-none text-white">{streak}</span>
+                        <span className="text-[12px] text-white/45">
                           {plural(streak, 'день', 'дня', 'дней')}
                         </span>
                       </>
                     )}
                   </div>
                 </div>
-                <SeriesOrb closed={dayClosed} burst={fireBurst} />
+                <SeriesOrb state={dayClosed ? 'closed' : frozen ? 'frozen' : 'idle'} burst={fireBurst} />
               </div>
               <div className="relative mt-3">
-                <p className={cn('text-[11px]', dayClosed ? 'text-bg/60' : 'text-white/50')}>
+                <p className="text-[11px] text-white/50">
                   {dayClosed
                     ? 'Серия сохранена — огонёк горит'
-                    : tasks.length === 0
-                      ? 'Добавьте задачи, чтобы зажечь огонёк'
-                      : 'Продлите огонёк — закройте день'}
+                    : frozen
+                      ? 'Вчерашний день заморожен — серия сохранена'
+                      : tasks.length === 0
+                        ? 'Добавьте задачи, чтобы зажечь огонёк'
+                        : 'Продлите огонёк — закройте день'}
                 </p>
-                <div className={cn('mt-2.5 flex items-center gap-2 border-t pt-2.5', dayClosed ? 'border-bg/10' : 'border-white/[0.07]')}>
-                  <ArrowUpRight className={cn('h-3 w-3', dayClosed ? 'text-bg/40' : 'text-[#FF5A36]/80')} />
-                  <p className={cn('text-[10px]', dayClosed ? 'text-bg/50' : 'text-white/35')}>
+                <div className="mt-2.5 flex items-center gap-2 border-t pt-2.5 border-white/[0.06]">
+                  <ArrowUpRight className="h-3 w-3 text-white/30" />
+                  <p className="text-[10px] text-white/35">
                     {t('dash.record')} — {best} {plural(best, 'день', 'дня', 'дней')}
                   </p>
                 </div>
@@ -695,11 +685,17 @@ export default function DashboardPage() {
               <button
                 type="button"
                 onClick={applyFreeze}
-                disabled={freeze <= 0 || dayClosed || freezeBusy}
+                disabled={freeze <= 0 || dayClosed || frozen || freezeBusy}
                 className="relative mt-3 flex items-center gap-1.5 text-left text-[11px] text-[#9fd8ff]/70 transition-colors hover:text-[#9fd8ff] disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <Snowflake className="h-3 w-3" />
-                {dayClosed ? 'Сегодня серия уже сохранена' : freeze > 0 ? 'Применить к вчерашнему дню' : 'Появятся после недели серии'}
+                {dayClosed
+                  ? 'Сегодня серия уже сохранена'
+                  : frozen
+                    ? 'Вчерашний день уже заморожен'
+                    : freeze > 0
+                      ? 'Применить к вчерашнему дню'
+                      : 'Появятся после недели серии'}
               </button>
             </Card>
           </motion.div>
@@ -891,92 +887,6 @@ export default function DashboardPage() {
           </Card>
         </motion.div>
 
-        {/* Темп дня — компактный */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.22, duration: 0.45 }}
-          className="mt-5"
-        >
-          <Card className="relative overflow-hidden p-5">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-4">
-                <div>
-                  <p className="label">{t('dash.tempo')}</p>
-                  <div className="mt-1.5 flex items-baseline gap-1">
-                    <span className="numeric font-display text-[30px] font-extrabold leading-none text-white">{todayScore ?? '—'}</span>
-                    <span className="text-[11px] text-muted">/ 12</span>
-                  </div>
-                  <p className={cn('mt-1 text-[10.5px]', scoreMeta ? scoreMeta.text : 'text-muted')}>
-                    {scoreMeta ? scoreMeta.label : t('dash.notRated')}
-                  </p>
-                </div>
-                <div className="h-10 w-px bg-white/[0.07]" />
-                <div>
-                  <p className="text-[9px] uppercase tracking-[0.14em] text-white/30">{t('dash.avg30')}</p>
-                  <p className="numeric mt-1 text-[15px] font-semibold text-white">{average ? average.toFixed(1) : '—'}</p>
-                  <p className="mt-0.5 text-[9.5px] text-muted">
-                    {productiveDays} {t('dash.productive')}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex h-10 flex-1 items-end gap-[2px] sm:max-w-[280px]">
-                {last14.map(({ day, score }) => {
-                  const meta = score ? tempoMeta[tempoZone(score)] : null;
-                  const height = score ? Math.max(16, ((13 - score) / 12) * 100) : 10;
-                  return (
-                    <div key={day} className="flex h-full flex-1 items-end" title={score ? `${day}: ${score}/12` : `${day}: —`}>
-                      <div
-                        className={cn('w-full rounded-[2px] transition-all duration-500', meta ? meta.bar : 'bg-white/[0.07]')}
-                        style={{ height: `${height}%` }}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-
-              <Button size="sm" variant="ghost" href="/tracker/tempo" className="shrink-0">
-                <Gauge className="h-3.5 w-3.5" /> {todayScore ? t('dash.change') : t('dash.rate')}
-              </Button>
-            </div>
-          </Card>
-        </motion.div>
-
-        {/* Последнее достижение — в самом низу */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.26, duration: 0.45 }}
-          className="mt-5"
-        >
-          <Card className="relative overflow-hidden p-5">
-            <div className="pointer-events-none absolute -left-12 bottom-0 h-32 w-32 rounded-full bg-premium/[0.05] blur-3xl" />
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-start gap-3.5">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-premium/25 bg-premium/[0.08] text-premium">
-                  <Trophy className="h-4 w-4" strokeWidth={1.6} />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="label">{t('dash.achievement')}</p>
-                  <p className="mt-1 font-display text-[14.5px] font-bold text-white">{achievement.title}</p>
-                  <p className="mt-0.5 text-[11px] text-muted">{achievement.note}</p>
-                </div>
-              </div>
-              <div className="flex flex-wrap items-center gap-1.5">
-                <Badge variant="premium">
-                  <Sparkles className="h-2.5 w-2.5" /> Premium
-                </Badge>
-                <Badge variant="pro">
-                  <CheckCircle2 className="h-2.5 w-2.5" /> {done} {plural(done, 'задача', 'задачи', 'задач')} сегодня
-                </Badge>
-                <Button variant="ghost" size="sm" href="/profile">
-                  {t('dash.profile')}
-                </Button>
-              </div>
-            </div>
-          </Card>
-        </motion.div>
       </div>
 
       <Modal

@@ -24,6 +24,7 @@
 
     --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+    --font-landing: var(--font-oswald), ui-sans-serif, system-ui, sans-serif;
   }
 
   html {
@@ -356,7 +357,192 @@
   }
 }
 
+/* ---------- iPhone showcase ---------- */
+@keyframes phoneSheen {
+  0% {
+    transform: translateX(-180%) rotate(16deg);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.65;
+  }
+  42% {
+    opacity: 0.15;
+  }
+  100% {
+    transform: translateX(420%) rotate(16deg);
+    opacity: 0;
+  }
+}
+.phone-sheen {
+  animation: phoneSheen 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* ============================================================
+   Лендинг · продуктовая система
+   ============================================================ */
+
+@layer components {
+  .lp-container {
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-12;
+  }
+
+  .lp-section {
+    @apply relative py-16 sm:py-24 lg:py-28;
+  }
+
+  .lp-label {
+    @apply inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-ash;
+  }
+
+  .lp-label::before {
+    content: '';
+    @apply h-[5px] w-[5px] rounded-[1px] bg-acid;
+  }
+
+  .lp-display,
+  .lp-h1,
+  .lp-h2,
+  .lp-h3 {
+    font-family: var(--font-landing);
+    font-feature-settings: 'liga' 1, 'kern' 1;
+    @apply uppercase text-paper;
+  }
+
+  .lp-display {
+    @apply font-semibold tracking-[-0.005em];
+  }
+
+  .lp-h1 {
+    @apply text-[40px] font-semibold leading-[0.92] tracking-[0.005em] sm:text-[56px] lg:text-[76px];
+  }
+
+  .lp-h2 {
+    @apply text-[32px] font-semibold leading-[0.94] tracking-[0.005em] sm:text-[42px] lg:text-[54px];
+  }
+
+  .lp-h3 {
+    @apply text-[19px] font-medium leading-[1.12] tracking-[0.01em] sm:text-[22px];
+  }
+
+  .lp-mark {
+    display: inline-block;
+    background: #c7f45b;
+    color: #0a0a0a;
+    padding: 0.02em 0.12em 0.07em;
+    border-radius: 4px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .lp-lead {
+    @apply text-[15px] leading-[1.7] text-ash sm:text-[16.5px];
+  }
+
+  .lp-mono {
+    @apply text-[11px] font-semibold uppercase tracking-[0.14em];
+  }
+
+  .lp-btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-[8px] px-5 py-3 text-[14px] font-semibold leading-none tracking-[-0.005em] transition-all duration-200 ease-out;
+  }
+
+  .lp-btn:active {
+    transform: translateY(1px);
+  }
+
+  .lp-btn:focus-visible {
+    outline: 2px solid rgba(199, 244, 91, 0.55);
+    outline-offset: 2px;
+  }
+
+  .lp-btn-acid {
+    @apply bg-acid text-[#0C0D0B] hover:bg-[#D3FA78];
+  }
+
+  .lp-btn-ghost {
+    @apply border border-paper/[0.16] text-paper/80 hover:border-paper/[0.32] hover:bg-paper/[0.04] hover:text-paper;
+  }
+
+  .lp-link {
+    @apply inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-paper/65 underline-offset-4 transition-colors hover:text-acid hover:underline;
+  }
+
+  .lp-rule {
+    @apply h-px w-full bg-line;
+  }
+
+  .lp-ticker {
+    @apply relative overflow-hidden border-y border-line bg-[#0C0C0D] py-3;
+  }
+
+  .lp-marquee {
+    display: flex;
+    width: max-content;
+    animation: lpMarquee 42s linear infinite;
+  }
+
+  .lp-marquee:hover {
+    animation-play-state: paused;
+  }
+
+  .lp-quote {
+    @apply text-[18px] font-normal leading-[1.62] tracking-[-0.005em] text-paper/85 sm:text-[20px] lg:text-[22px];
+  }
+
+  /* Спокойный фон героя: графит, тонкая сетка, без свечений */
+  .lp-hero-bg {
+    background: linear-gradient(180deg, #101012 0%, #0b0b0c 68%);
+  }
+
+  .lp-grid {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: linear-gradient(to bottom, #000 0%, #000 55%, transparent 100%);
+  }
+
+  /* Зерно поверх лендинга — убирает «стерильность» градиентов */
+  .landing-root {
+    position: relative;
+  }
+
+  /* Якоря не должны прятаться под липкой шапкой */
+  .landing-root section[id] {
+    scroll-margin-top: 76px;
+  }
+
+  .landing-root::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 180px 180px;
+    opacity: 0.025;
+  }
+}
+
+@keyframes lpMarquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .lp-marquee {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {

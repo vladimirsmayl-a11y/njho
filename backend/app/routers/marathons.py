@@ -394,6 +394,32 @@ async def chat_image(
     return Response(row[0], media_type=row[1], headers={"Cache-Control": "private, max-age=86400"})
 
 
+@router.get("/{marathon_id}/members")
+async def marathon_members_list(
+    marathon_id: int, user: User = Depends(require_subscriber), db: AsyncSession = Depends(get_db)
+):
+    await _published(db, marathon_id)
+    rows = (
+        await db.execute(
+            select(User.id, User.username, User.avatar_version, User.tier, User.role)
+            .join(MarathonMember, MarathonMember.user_id == User.id)
+            .where(MarathonMember.marathon_id == marathon_id)
+            .order_by(User.username)
+        )
+    ).all()
+    return [
+        {
+            "id": u.id,
+            "username": u.username,
+            "avatar_url": f"/api/me/avatar?v={u.avatar_version}" if u.avatar_version else None,
+            "tier": u.tier,
+            "role": u.role,
+            "is_me": u.id == user.id,
+        }
+        for u in rows
+    ]
+
+
 @router.delete("/{marathon_id}/chat/{message_id}", status_code=204)
 async def delete_own_message(
     marathon_id: int, message_id: int, user: User = Depends(require_subscriber), db: AsyncSession = Depends(get_db)

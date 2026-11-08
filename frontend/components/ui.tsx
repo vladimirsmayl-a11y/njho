@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Activity,
+  BarChart3,
   Bell,
   BookOpen,
   Check,
@@ -399,6 +400,7 @@ interface ToastItem {
   title: string;
   description?: string;
   tone: ToastTone;
+  onPress?: () => void;
 }
 
 let toastSeq = 0;
@@ -417,21 +419,23 @@ export function dismissToast(id: number) {
 
 export function toast(
   title: string,
-  options: { description?: string; tone?: ToastTone } = {},
+  options: { description?: string; tone?: ToastTone; onPress?: () => void } = {},
 ) {
   const item: ToastItem = {
     id: (toastSeq += 1),
     title,
     description: options.description,
     tone: options.tone ?? 'default',
+    onPress: options.onPress,
   };
   toastItems = [...toastItems.slice(-2), item];
   publishToasts();
-  window.setTimeout(() => dismissToast(item.id), 3800);
+  window.setTimeout(() => dismissToast(item.id), item.description ? 5200 : 3800);
 }
 
 export function ToastHost() {
   const [items, setItems] = React.useState<ToastItem[]>([]);
+  const [openItem, setOpenItem] = React.useState<ToastItem | null>(null);
 
   React.useEffect(() => {
     toastListeners.add(setItems);
@@ -442,62 +446,115 @@ export function ToastHost() {
   }, []);
 
   return (
-    <div
-      className="pointer-events-none fixed right-4 top-4 z-[90] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2 sm:right-6 sm:top-6"
-      aria-live="polite"
-      aria-atomic="false"
-    >
-      <AnimatePresence initial={false}>
-        {items.map((item) => {
-          const Icon = item.tone === 'danger' ? X : item.tone === 'success' ? Check : Sparkles;
-          return (
-            <motion.div
-              key={item.id}
-              layout
-              initial={{ opacity: 0, y: -16, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.98 }}
-              transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-              className={cn(
-                'pointer-events-auto flex items-start gap-3 rounded-2xl border bg-[#151517]/95 px-4 py-3 shadow-panel backdrop-blur-xl',
-                item.tone === 'danger'
-                  ? 'border-danger/30'
-                  : item.tone === 'success'
-                    ? 'border-primary/30'
-                    : 'border-white/[0.1]',
-              )}
-            >
-              <span
+    <>
+      <div
+        className="pointer-events-none fixed right-4 top-4 z-[100] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2 sm:right-6 sm:top-6"
+        aria-live="polite"
+        aria-atomic="false"
+      >
+        <AnimatePresence initial={false}>
+          {items.map((item) => {
+            const Icon = item.tone === 'danger' ? X : item.tone === 'success' ? Check : Sparkles;
+            const expandable = Boolean(item.onPress || item.description);
+            const handlePress = () => {
+              if (item.onPress) {
+                item.onPress();
+              } else if (item.description) {
+                setOpenItem(item);
+              }
+              dismissToast(item.id);
+            };
+            return (
+              <motion.div
+                key={item.id}
+                layout
+                initial={{ opacity: 0, y: -16, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.98 }}
+                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                 className={cn(
-                  'mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border',
+                  'pointer-events-auto flex items-start gap-3 rounded-2xl border bg-[#101012] px-4 py-3 shadow-panel backdrop-blur',
                   item.tone === 'danger'
-                    ? 'border-danger/30 text-danger'
+                    ? 'border-danger/40 bg-danger/[0.05]'
                     : item.tone === 'success'
-                      ? 'border-primary/30 text-primary'
-                      : 'border-white/[0.12] text-white/60',
+                      ? 'border-primary/40 bg-primary/[0.05]'
+                      : 'border-white/[0.12]',
+                  expandable ? 'cursor-pointer hover:bg-white/[0.04]' : '',
                 )}
+                onClick={handlePress}
+                role={expandable ? 'button' : undefined}
+                tabIndex={expandable ? 0 : undefined}
+                onKeyDown={(event) => {
+                  if (!expandable) return;
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    handlePress();
+                  }
+                }}
               >
-                <Icon className="h-3 w-3" strokeWidth={2} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="text-[12.5px] font-semibold text-white">{item.title}</p>
-                {item.description ? (
-                  <p className="mt-0.5 text-[11.5px] leading-relaxed text-muted">{item.description}</p>
-                ) : null}
-              </div>
-              <button
-                type="button"
-                onClick={() => dismissToast(item.id)}
-                className="mt-0.5 text-white/25 transition-colors hover:text-white"
-                aria-label="Закрыть уведомление"
-              >
-                <X className="h-3.5 w-3.5" />
-              </button>
-            </motion.div>
-          );
-        })}
-      </AnimatePresence>
-    </div>
+                <span
+                  className={cn(
+                    'mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border',
+                    item.tone === 'danger'
+                      ? 'border-danger/50 text-danger'
+                      : item.tone === 'success'
+                        ? 'border-primary/50 text-primary'
+                        : 'border-white/[0.14] text-white/70',
+                  )}
+                >
+                  <Icon className="h-3 w-3" strokeWidth={2} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[12px] font-semibold text-white">{item.title}</p>
+                  {item.description ? (
+                    <p className="mt-0.5 line-clamp-2 text-[11px] leading-relaxed text-white/70">{item.description}</p>
+                  ) : null}
+                  {expandable ? (
+                    <p className="mt-1 text-[9.5px] uppercase tracking-[0.12em] text-white/25">
+                      Нажмите, чтобы открыть
+                    </p>
+                  ) : null}
+                </div>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    dismissToast(item.id);
+                  }}
+                  className="mt-0.5 text-white/25 transition-colors hover:text-white"
+                  aria-label="Закрыть уведомление"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+      </div>
+
+      <Modal
+        open={Boolean(openItem)}
+        onClose={() => setOpenItem(null)}
+        title={openItem?.title}
+        subtitle="Полный текст уведомления"
+        width="max-w-md"
+        footer={
+          <div className="flex justify-end">
+            <Button variant="ghost" onClick={() => setOpenItem(null)}>
+              Понятно
+            </Button>
+          </div>
+        }
+      >
+        <p className="whitespace-pre-line text-[13px] leading-relaxed text-white/70">
+          {openItem?.description}
+        </p>
+        <div className="mt-4 flex items-center gap-2 border-t border-white/[0.07] pt-3 text-[10px] text-white/25">
+          <Clock className="h-3 w-3" />
+          Только что · ЛВС
+        </div>
+      </Modal>
+    </>
   );
 }
 
@@ -1313,6 +1370,7 @@ const SIDEBAR_ITEMS = [
   { href: '/knowledge', key: 'nav.knowledge', icon: GraduationCap },
   { href: '/friends', key: 'nav.friends', icon: Users },
   { href: '/settings', key: 'nav.settings', icon: Settings },
+  { href: '/tracker/stats', key: 'nav.stats', icon: BarChart3 },
 ] as const;
 
 function isActive(pathname: string, href: string, exact?: boolean) {

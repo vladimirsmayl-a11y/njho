@@ -10,6 +10,7 @@ const TITLES: Record<string, string> = {
   '/dashboard': 'Кабинет — ЛВС',
   '/tracker/12-weeks': 'Квартал — ЛВС',
   '/tracker/tempo': 'Темп дня — ЛВС',
+  '/tracker/stats': 'Статистика — ЛВС',
   '/tracker': 'Трекеры — ЛВС',
   '/journal': 'Дневник — ЛВС',
   '/marathons/create': 'Новый марафон — ЛВС',
@@ -23,8 +24,8 @@ const TITLES: Record<string, string> = {
   '/pricing': 'Тарифы — ЛВС',
   '/paywall': 'Доступ ограничен — ЛВС',
   '/login': 'Вход — ЛВС',
-  '/contacts': 'Контакты — ЛВС',
-  '/terms': 'Пользовательское соглашение — ЛВС',
+  '/contacts': 'Контакты и реквизиты — ЛВС',
+  '/terms': 'Оферта и соглашение — ЛВС',
   '/privacy': 'Политика конфиденциальности — ЛВС',
 };
 

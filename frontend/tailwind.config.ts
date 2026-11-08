@@ -23,10 +23,19 @@ const config: Config = {
         raised: '#141416',
         neon: '#A8FF35',
         ok: '#A8FF35',
+        /* --- редакционная палитра лендинга --- */
+        paper: '#EDE7DA',
+        bone: '#E9E4D8',
+        acid: '#C7F45B',
+        clay: '#FF6B4A',
+        ash: '#A9A399',
+        line: 'rgba(237,231,218,0.14)',
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
         display: ['var(--font-manrope)', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-oswald)', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-serif)', 'Georgia', 'serif'],
         mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
       },
       borderRadius: {

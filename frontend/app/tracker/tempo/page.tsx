@@ -324,44 +324,88 @@ export default function TempoPage() {
             </div>
 
             <div className="mt-6">
-              <div className="relative flex h-40 items-end gap-[3px] sm:gap-1.5">
-                <div
-                  className="pointer-events-none absolute inset-x-0 border-t border-dashed border-white/[0.12]"
-                  style={{ bottom: `${Math.max(8, ((13 - average) / 12) * 100)}%` }}
+              <div className="relative flex h-44 items-center justify-center">
+                <svg
+                  className="absolute inset-0 w-full h-full"
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
                 >
-                  <span className="absolute -top-4 right-0 text-[9px] uppercase tracking-[0.12em] text-white/30">
-                    среднее {average ? average.toFixed(1) : '—'}
+                  <defs>
+                    <linearGradient id="tempoLineGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#A8FF35" />
+                      <stop offset="100%" stopColor="#7FC8FF" />
+                    </linearGradient>
+                  </defs>
+                  <polyline
+                    fill="none"
+                    stroke="url(#tempoLineGrad)"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    points={days
+                      .map((day, i) => {
+                        const score = tempo[day];
+                        if (typeof score !== 'number') return null;
+                        const x = days.length === 1 ? 50 : (i / (days.length - 1)) * 100;
+                        const y = 100 - (score / 12) * 100;
+                        return `${x},${y}`;
+                      })
+                      .filter(Boolean)
+                      .join(' ')}
+                  />
+                  {days.map((day, i) => {
+                    const score = tempo[day];
+                    if (typeof score !== 'number') return null;
+                    const x = days.length === 1 ? 50 : (i / (days.length - 1)) * 100;
+                    const y = 100 - (score / 12) * 100;
+                    return (
+                      <circle
+                        key={day}
+                        cx={x}
+                        cy={y}
+                        r="3.5"
+                        fill="#0A0A0A"
+                        stroke="#A8FF35"
+                        strokeWidth="2"
+                      />
+                    );
+                  })}
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                  <span className="numeric font-display text-[40px] font-extrabold leading-none text-white">
+                    {todayScore ?? '—'}
+                  </span>
+                  <span className="text-[10px] text-white/40 uppercase tracking-[0.14em] mt-1">
+                    из 12
                   </span>
                 </div>
-                {days.map((day) => {
-                  const score = tempo[day];
-                  const meta = score ? tempoMeta[tempoZone(score)] : null;
-                  const height = score ? Math.max(10, ((13 - score) / 12) * 100) : 5;
-                  return (
-                    <div
+                <div className="absolute inset-0 flex items-end justify-center px-4 pb-6 pointer-events-none">
+                  {days.map((day, i) => (
+                    <span
                       key={day}
-                      className="group relative flex h-full flex-1 items-end"
-                      title={score ? `${shortDate(day)} — ${score}/12` : `${shortDate(day)} — без оценки`}
+                      className="text-[8px] uppercase tracking-[0.12em] text-white/20"
+                      style={{ left: days.length === 1 ? '50%' : `${(i / (days.length - 1)) * 100}%`, transform: 'translateX(-50%)' }}
                     >
-                      <div
-                        className={cn(
-                          'w-full rounded-[3px] transition-all duration-500',
-                          meta ? meta.bar : 'bg-white/[0.05]',
-                          score && score >= 9 ? 'opacity-90' : undefined,
-                        )}
-                        style={{ height: `${height}%` }}
-                      />
-                      <span className="pointer-events-none absolute bottom-full left-1/2 mb-1.5 hidden -translate-x-1/2 whitespace-nowrap rounded-md border border-white/[0.1] bg-[#151517] px-1.5 py-0.5 text-[9px] text-white/70 group-hover:block">
-                        {score ? `${score}/12` : '—'}
-                      </span>
-                    </div>
-                  );
-                })}
+                      {i % Math.max(1, Math.floor(days.length / 5)) === 0 ? shortDate(day) : ''}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <div className="mt-2 flex justify-between text-[9px] uppercase tracking-[0.1em] text-white/20">
+              <div className="mt-3 flex justify-between text-[9px] uppercase tracking-[0.1em] text-white/20">
                 <span>{shortDate(days[0])}</span>
                 <span>{shortDate(days[Math.floor(days.length / 2)])}</span>
                 <span>сегодня</span>
+              </div>
+              <div className="mt-3 flex items-center justify-between text-[10px] text-muted">
+                <div className="flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#A8FF35]" /> 1–4 продуктивно
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-white/45" /> 5–8 ровно
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#7FC8FF]" /> 9–12 отдых
+                </div>
               </div>
             </div>
           </Card>
@@ -377,25 +421,40 @@ export default function TempoPage() {
             <span className="text-[10.5px] text-muted">{history.length} записей</span>
           </div>
 
-          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          <div className="mt-4 space-y-2">
             {history.map((day) => {
               const score = tempo[day];
               const meta = tempoMeta[tempoZone(score)];
+              const dayLabel = day === today ? 'сегодня' : longDate(day);
               return (
                 <div
                   key={day}
-                  className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3.5 py-2.5"
+                  className={cn(
+                    'flex items-center justify-between gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3.5 py-3',
+                    day === today ? 'border-white/[0.12] bg-white/[0.04]' : '',
+                  )}
                 >
-                  <span className={cn('flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border', meta.border, meta.bg)}>
-                    <span className={cn('numeric text-[11px] font-bold', meta.text)}>{score}</span>
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-[11.5px] text-white/80 first-letter:uppercase">
-                      {longDate(day)}
-                    </p>
-                    <p className="text-[9.5px] text-muted">{meta.label}</p>
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={cn(
+                        'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border',
+                        meta.border, meta.bg,
+                      )}
+                    >
+                      <span className={cn('numeric text-[20px] font-extrabold leading-none', meta.text)}>
+                        {score}
+                      </span>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-medium text-[12px] text-white first-letter:uppercase">
+                        {dayLabel}
+                      </p>
+                      <p className="text-[10px] text-muted">{meta.label}</p>
+                    </div>
                   </div>
-                  <span className={cn('h-1.5 w-1.5 rounded-full', meta.bar)} />
+                  <span className={cn('numeric text-[11px] font-bold', meta.text)}>
+                    {score}/12
+                  </span>
                 </div>
               );
             })}

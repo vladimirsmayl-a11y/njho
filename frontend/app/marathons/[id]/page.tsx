@@ -209,6 +209,9 @@ export default function MarathonDetailPage({ params }: { params: { id: string } 
   const [submitting, setSubmitting] = useState(false);
   const [joining, setJoining] = useState(false);
   const [socketState, setSocketState] = useState<'connecting' | 'open' | 'fallback'>('connecting');
+  const [activeTab, setActiveTab] = useState<'chat' | 'members'>('chat');
+  const [members, setMembers] = useState<{ id: number; username: string; avatar_url?: string | null; tier: string; role: string; is_me: boolean }[]>([]);
+  const [membersLoading, setMembersLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesBoxRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -218,6 +221,23 @@ export default function MarathonDetailPage({ params }: { params: { id: string } 
 
   const remoteId = isRemoteId(params.id);
   const joined = marathon.joined !== false;
+
+  const loadMembers = useCallback(async () => {
+    if (!remoteId || !joined) return;
+    setMembersLoading(true);
+    try {
+      const rows = await api<{ id: number; username: string; avatar_url?: string | null; tier: string; role: string; is_me: boolean }[]>(`/marathons/${params.id}/members`);
+      setMembers(Array.isArray(rows) ? rows : []);
+    } catch {
+      setMembers([]);
+    } finally {
+      setMembersLoading(false);
+    }
+  }, [params.id, remoteId, joined]);
+
+  useEffect(() => {
+    void loadMembers();
+  }, [loadMembers]);
 
   const applyIncoming = useCallback((raw: RawMessage) => {
     setMessages((prev) => mergeIncoming(prev, normalizeMessage(raw)));
@@ -639,9 +659,39 @@ export default function MarathonDetailPage({ params }: { params: { id: string } 
           </div>
         </Card>
 
-        <div className="grid gap-5 xl:grid-cols-[1fr_1.05fr]">
-          {/* Задания */}
-          <Card className="flex min-h-0 flex-col p-4 sm:p-5 xl:min-h-[560px]">
+        <div className="space-y-4">
+          {/* Табы */}
+          <div className="flex gap-1 rounded-xl border border-white/[0.08] bg-white/[0.02] p-1">
+            <button
+              type="button"
+              onClick={() => setActiveTab('chat')}
+              className={cn(
+                'flex-1 py-2.5 rounded-lg text-[11px] font-medium transition-colors',
+                activeTab === 'chat'
+                  ? 'bg-white text-bg border-transparent'
+                  : 'text-white/40 hover:text-white hover:bg-white/[0.04]',
+              )}
+            >
+              <MessageSquare className="h-3.5 w-3.5" /> Чат
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('members')}
+              className={cn(
+                'flex-1 py-2.5 rounded-lg text-[11px] font-medium transition-colors',
+                activeTab === 'members'
+                  ? 'bg-white text-bg border-transparent'
+                  : 'text-white/40 hover:text-white hover:bg-white/[0.04]',
+              )}
+            >
+              <Users className="h-3.5 w-3.5" /> Участники
+            </button>
+          </div>
+
+          {activeTab === 'chat' ? (
+            <div className="grid gap-5 xl:grid-cols-[1fr_1.05fr]">
+              {/* Задания */}
+              <Card className="flex min-h-0 flex-col p-4 sm:p-5 xl:min-h-[560px]">
             <div className="mb-4 flex items-end justify-between">
               <div>
                 <p className="label">Задания куратора</p>
@@ -942,6 +992,44 @@ export default function MarathonDetailPage({ params }: { params: { id: string } 
               </>
             )}
           </Card>
+          </div>
+          ) : (
+            <Card className="p-4 sm:p-5">
+              <div className="flex items-end justify-between gap-3 mb-4">
+                <div>
+                  <p className="label">Участники марафона</p>
+                  <h2 className="mt-1 font-display text-lg font-bold tracking-[-0.02em] text-white">
+                    {members.length}
+                  </h2>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {membersLoading ? (
+                  <div className="h-10 animate-pulse rounded-xl border border-white/[0.05] bg-white/[0.02]" />
+                ) : members.length ? (
+                  members.map((m) => (
+                    <div key={m.id} className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-3">
+                      <Avatar size={32} src={m.avatar_url} fallback={m.username} />
+                      <div className="min-w-0 flex-1">
+                        <p className={cn('truncate text-[12.5px] font-semibold', m.is_me ? 'text-primary' : 'text-white')}>
+                          {m.username}
+                        </p>
+                        <p className="text-[10px] text-muted">{m.is_me ? 'Вы' : m.tier}</p>
+                      </div>
+                      <Badge variant={m.role === 'owner' ? 'premium' : m.role === 'curator' ? 'pro' : 'free'}>
+                        {m.role === 'owner' ? 'Владелец' : m.role === 'curator' ? 'Куратор' : 'Участник'}
+                      </Badge>
+                    </div>
+                  ))
+                ) : (
+                  <div className="rounded-xl border border-dashed border-white/[0.12] px-4 py-10 text-center">
+                    <Users className="mx-auto h-6 w-6 text-white/20" />
+                    <p className="mt-2 text-[11.5px] text-muted">Участников пока нет</p>
+                  </div>
+                )}
+              </div>
+            </Card>
+          )}
         </div>
       </div>
 

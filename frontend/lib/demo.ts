@@ -202,13 +202,7 @@ export const demoMarathonTasks = [
   { id: 'mt-5', title: 'Дневник вечером', description: 'Три победы и один урок дня.', status: 'open' },
 ];
 
-export const demoMessages = [
-  { id: 'msg-1', sender_name: 'Марина К.', text: 'Доброе утро, команда! День 7 — экватор. Кто уже заметил, что просыпаться стало легче?', created_at: '07:02', is_me: false, avatar_url: null },
-  { id: 'msg-2', sender_name: 'Илья Р.', text: 'Да, впервые за долгое время встал без третьего будильника.', created_at: '07:14', is_me: false, avatar_url: null },
-  { id: 'msg-3', sender_name: 'Вы', text: 'У меня пока качели, но зарядка уже вошла в привычку. Держимся!', created_at: '07:21', is_me: true, avatar_url: null },
-  { id: 'msg-4', sender_name: 'Анна В.', text: 'Вот мой вид из окна сегодня. Мороз, но красиво.', created_at: '07:33', is_me: false, avatar_url: null, image_url: 'gradient' },
-  { id: 'msg-5', sender_name: 'Марина К.', text: 'Сегодня до 22:00 сдаём фото зарядки. Не забывайте про воду.', created_at: '08:05', is_me: false, avatar_url: null },
-];
+export const demoMessages: never[] = [];
 
 export const demoFriends = [
   { id: 'f-1', username: 'Марина К.', tier: 'premium', streak: 112, completed_tasks: 1640, rank: 'Легенда', online: true, tagline: 'Куратор марафонов' },

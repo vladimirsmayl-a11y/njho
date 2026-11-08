@@ -418,7 +418,7 @@ export default function TwelveWeeksPage() {
         <PageHeader
           eyebrow={<Badge variant="pro">Система квартала</Badge>}
           title="Квартал"
-          subtitle="Короткий горизонт, плотный прогресс. Отмечайте тактики каждый день — Score посчитается сам."
+          subtitle="Короткий горизонт, плотный прогресс. Отмечайте тактики каждый день — счёт посчитается сам."
           actions={
             <>
               <Button variant="ghost" onClick={() => setShowOnboarding(true)}>
@@ -637,7 +637,7 @@ export default function TwelveWeeksPage() {
               />
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="label">Ваш Score</p>
+                  <p className="label">Ваш счёт</p>
                   <h2 className="mt-1.5 font-display text-xl font-bold tracking-[-0.02em] text-white">
                     Неделя {week}
                   </h2>
@@ -722,7 +722,7 @@ export default function TwelveWeeksPage() {
               <div className="mt-4 space-y-3">
                 {[
                   { label: 'Закрыто недель', value: `${Math.max(0, week - 1)} / 12` },
-                  { label: 'Лучший Score', value: '94' },
+                  { label: 'Лучший счёт', value: '94' },
                   { label: 'Серия отметок', value: `${Math.max(3, doneCells)}` },
                 ].map((row) => (
                   <div key={row.label} className="flex items-center justify-between border-b border-white/[0.05] pb-3 last:border-0 last:pb-0">

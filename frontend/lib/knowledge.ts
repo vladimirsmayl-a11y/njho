@@ -8,9 +8,8 @@ export type KnowledgeCategoryId =
   | 'goals'
   | 'focus'
   | 'identity'
-  | 'recovery'
-  | 'system'
-  | 'mastery';
+  | 'sleep'
+  | 'system';
 
 export type KnowledgeArticle = {
   id: string;
@@ -83,9 +82,9 @@ export const KNOWLEDGE_CATEGORIES: KnowledgeCategory[] = [
     accent: '#FF9EC4',
   },
   {
-    id: 'recovery',
-    title: 'Восстановление',
-    description: 'Сон, тело и ресурс для длинной дистанции.',
+    id: 'sleep',
+    title: 'Сон',
+    description: 'Сон, отдых и восстановление ресурса для длинной дистанции.',
     gradient: 'from-[#9AA8FF]/[0.18] via-[#0f1120] to-[#0a0a0a]',
     accent: '#9AA8FF',
   },
@@ -95,13 +94,6 @@ export const KNOWLEDGE_CATEGORIES: KnowledgeCategory[] = [
     description: 'Планы, среда и маленькие шаги.',
     gradient: 'from-[#C7C7CC]/[0.16] via-[#161618] to-[#0a0a0a]',
     accent: '#C7C7CC',
-  },
-  {
-    id: 'mastery',
-    title: 'Мастерство',
-    description: 'Практика, обратная связь и рост.',
-    gradient: 'from-[#FFB86B]/[0.16] via-[#1b1208] to-[#0a0a0a]',
-    accent: '#FFB86B',
   },
 ];
 

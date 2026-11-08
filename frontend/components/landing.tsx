@@ -1,36 +1,52 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import {
-  Activity,
   ArrowRight,
   ArrowUpRight,
-  Bell,
-  BookOpen,
-  CalendarDays,
+  BadgeCheck,
+  Building2,
   Check,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Flame,
-  HeartHandshake,
+  CreditCard,
+  FileCheck2,
+  FileText,
+  Fingerprint,
+  Globe2,
+  Headphones,
   Loader2,
   Lock,
   Mail,
   Menu,
-  Send,
-  Trophy,
-  Users,
+  ScrollText,
+  ShieldCheck,
   Volume2,
   VolumeX,
   X,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { createContext, useContext, useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type ReactNode,
+} from 'react';
 import { TelegramIcon } from './icons';
 import { useAuth } from './auth-provider';
+import { AppWindowShowcase, IPhoneShowcase } from './iphone-showcase';
 import { api, body, errorText, isNetworkError } from '@/lib/api';
+import { cn } from '@/lib/utils';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 /* ============================================================
    Звуки: тихие, премиальные, генерируются на месте (Web Audio)
@@ -238,7 +254,8 @@ export function LandingAuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthModalContext.Provider value={{ open: openAuth }}>
-      {children}
+      <div className="landing-root">{children}</div>
+      <RevealEngine />
 
       <AnimatePresence>
         {open && (
@@ -257,7 +274,7 @@ export function LandingAuthProvider({ children }: { children: ReactNode }) {
               type="button"
               aria-label="Закрыть окно входа"
               onClick={close}
-              className="absolute inset-0 cursor-default bg-black/70 backdrop-blur-md"
+              className="absolute inset-0 cursor-default bg-black/75 backdrop-blur-md"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -395,17 +412,8 @@ export function LandingAuthProvider({ children }: { children: ReactNode }) {
                 </button>
               </form>
 
-              <p className="mt-5 text-center text-[11px] leading-relaxed text-white/30">
-                Ещё нет доступа? Оформите его в{' '}
-                <a
-                  href="https://t.me/lvs_key_bot"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/55 underline decoration-white/20 underline-offset-2 transition hover:text-white"
-                >
-                  Telegram-боте
-                </a>
-                .
+              <p className="mt-5 text-center text-[10.5px] leading-relaxed text-white/25">
+                Продолжая, вы принимаете оферту и политику обработки данных.
               </p>
             </motion.div>
           </motion.div>
@@ -416,24 +424,55 @@ export function LandingAuthProvider({ children }: { children: ReactNode }) {
 }
 
 /* ============================================================
+   Появление секций при прокрутке (GSAP ScrollTrigger)
+   ============================================================ */
+
+function RevealEngine() {
+  useGSAP(() => {
+    const mm = gsap.matchMedia();
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      const items = gsap.utils.toArray<HTMLElement>('[data-reveal]');
+      items.forEach((el) => {
+        gsap.from(el, {
+          y: 26,
+          opacity: 0,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 90%',
+            once: true,
+          },
+        });
+      });
+    });
+    return () => mm.revert();
+  });
+
+  return null;
+}
+
+/* ============================================================
    Шапка
    ============================================================ */
 
 const NAV = [
   { href: '#potential', label: 'Возможности' },
-  { href: '#about', label: 'Экосистема' },
+  { href: '#about', label: 'Система' },
   { href: '#pricing', label: 'Тарифы' },
   { href: '#reviews', label: 'Отзывы' },
-  { href: '#faq', label: 'FAQ' },
+  { href: '#faq', label: 'Вопросы' },
 ];
 
 export function Header() {
   const auth = useAuthModal();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 28, mass: 0.25 });
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -448,42 +487,60 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={cn(
+        'sticky top-0 z-50 transition-all duration-300',
         scrolled || open
-          ? 'border-b border-white/[0.07] bg-black/70 backdrop-blur-xl'
-          : 'border-b border-transparent bg-transparent'
-      }`}
+          ? 'border-b border-line bg-[#0B0B0C]/95 backdrop-blur-xl'
+          : 'border-b border-transparent bg-transparent',
+      )}
     >
-      <div className="container-x flex h-[68px] items-center justify-between">
-        <Link
-          href="/"
-          aria-label="ЛВС — на главную"
-          className="group flex items-center gap-2.5"
-          onClick={() => setOpen(false)}
-        >
-          <span className="font-display text-[17px] font-extrabold uppercase leading-none tracking-[0.38em] text-white">
+      <motion.div
+        aria-hidden
+        style={{ scaleX: progress }}
+        className="fixed inset-x-0 top-0 z-[60] h-[1.5px] origin-left bg-acid"
+      />
+      <div className="lp-container flex h-[72px] items-center justify-between">
+        <Link href="/" aria-label="ЛВС — на главную" className="group flex items-center gap-2.5">
+          <span className="font-heading text-[17px] font-semibold uppercase leading-none tracking-[0.2em] text-paper">
             ЛВС
           </span>
-          <span className="h-1 w-1 rounded-full bg-neon shadow-[0_0_10px_rgba(0,229,143,0.9)] transition-transform duration-500 group-hover:scale-125" />
+          <span className="h-1.5 w-1.5 rounded-full bg-acid transition-transform duration-500 group-hover:scale-125" />
         </Link>
 
-        <nav className="hidden items-center gap-9 md:flex" aria-label="Разделы страницы">
+        <nav className="hidden items-center gap-8 md:flex" aria-label="Разделы страницы">
           {NAV.map((item) => (
-            <a key={item.href} href={item.href} className="nav-link">
+            <a
+              key={item.href}
+              href={item.href}
+              className="text-[13.5px] font-medium text-paper/55 transition-colors hover:text-paper"
+            >
               {item.label}
             </a>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={auth.open}
-            className="btn btn-ghost hidden !px-5 !py-2.5 text-[13px] sm:inline-flex"
+            className="hidden text-[13.5px] font-medium text-paper/55 transition hover:text-paper sm:inline-flex"
           >
             Войти
-            <ArrowUpRight className="h-3.5 w-3.5 text-white/40" />
           </button>
+          <a
+            href="#pricing"
+            className="lp-btn lp-btn-acid hidden !px-4 !py-2.5 !text-[13px] sm:inline-flex"
+          >
+            Начать
+            <ArrowRight className="h-3.5 w-3.5" />
+          </a>
+          <a
+            href="#pricing"
+            onClick={() => playSound('soft')}
+            className="lp-btn lp-btn-acid !px-3.5 !py-2.5 !text-[12.5px] sm:hidden"
+          >
+            Начать
+          </a>
           <button
             type="button"
             onClick={() => {
@@ -492,7 +549,7 @@ export function Header() {
             }}
             aria-expanded={open}
             aria-label={open ? 'Закрыть меню' : 'Открыть меню'}
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/12 text-white/80 transition hover:border-white/30 hover:bg-white/5 active:scale-[0.98] md:hidden"
+            className="grid h-10 w-10 place-items-center rounded-full border border-paper/15 text-paper/80 transition hover:border-paper/40 hover:bg-paper/5 active:scale-[0.98] md:hidden"
           >
             {open ? <X className="h-[18px] w-[18px]" /> : <Menu className="h-[18px] w-[18px]" />}
           </button>
@@ -506,26 +563,37 @@ export function Header() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden border-t border-white/[0.06] bg-black/90 backdrop-blur-xl md:hidden"
+            className="overflow-hidden border-t border-line bg-[#0B0B0C]/95 backdrop-blur-xl md:hidden"
           >
-            <nav className="container-x flex flex-col gap-1 py-5" aria-label="Мобильное меню">
+            <nav className="lp-container flex flex-col py-4" aria-label="Мобильное меню">
               {NAV.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-xl px-3 py-3 text-sm text-white/70 transition hover:bg-white/5 hover:text-white"
+                  className="border-b border-line/60 py-4 font-heading text-[18px] font-medium uppercase tracking-[0.06em] text-paper/80 transition hover:text-acid"
                 >
                   {item.label}
                 </a>
               ))}
+              <a
+                href="#pricing"
+                onClick={() => {
+                  setOpen(false);
+                  playSound('soft');
+                }}
+                className="lp-btn lp-btn-acid mt-5 w-full"
+              >
+                Начать сегодня
+                <ArrowRight className="h-4 w-4" />
+              </a>
               <button
                 type="button"
                 onClick={() => {
                   setOpen(false);
                   auth.open();
                 }}
-                className="btn btn-ghost mt-3 w-full !py-3.5"
+                className="lp-btn lp-btn-ghost mt-3 w-full"
               >
                 Войти в кабинет
               </button>
@@ -541,243 +609,255 @@ export function Header() {
    Hero
    ============================================================ */
 
-const HABITS = ['Подъём в 6:00', 'Тренировка 45 минут', 'Чтение 20 страниц', 'Дневник вечером'];
+const HERO_STATS = [
+  { value: '194', label: 'статьи в базе' },
+  { value: '9', label: 'направлений' },
+  { value: '24/7', label: 'доступ' },
+];
 
-function PlannerCard() {
-  const [done, setDone] = useState<boolean[]>([true, true, false, false]);
-  const [streak, setStreak] = useState(14);
-  const [spark, setSpark] = useState(0);
-  const [date, setDate] = useState('');
+export function Hero() {
+  const auth = useAuthModal();
+  const root = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    setDate(new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' }).format(new Date()));
-  }, []);
-
-  const completed = done.filter(Boolean).length;
-  const progress = Math.round((completed / done.length) * 100);
-
-  const toggle = (index: number) => {
-    const next = done.map((value, i) => (i === index ? !value : value));
-    setDone(next);
-    playSound('click');
-
-    if (next.every(Boolean) && !done.every(Boolean)) {
-      setStreak((value) => value + 1);
-      setSpark((value) => value + 1);
-      playSound('spark');
-    }
-  };
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        const q = gsap.utils.selector(root);
+        const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+        tl.from(q('[data-hero-line]'), {
+          yPercent: 118,
+          duration: 1.15,
+          stagger: 0.09,
+          delay: 0.1,
+        })
+          .from(
+            q('[data-hero-fade]'),
+            { y: 20, opacity: 0, duration: 0.85, stagger: 0.09 },
+            0.35,
+          )
+          .from(
+            q('[data-hero-stat]'),
+            { y: 16, opacity: 0, duration: 0.7, stagger: 0.08 },
+            0.62,
+          );
+      });
+      return () => mm.revert();
+    },
+    { scope: root },
+  );
 
   return (
-    <div className="relative w-full max-w-[440px]">
-      <div
-        aria-hidden
-        className="absolute -inset-8 rounded-[40px] bg-white/[0.05] blur-3xl"
-      />
-      <div className="card relative overflow-hidden p-6 shadow-[0_50px_140px_-60px_rgba(0,0,0,1)] sm:p-7">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent"
-        />
+    <section
+      ref={root}
+      className="lp-hero-bg relative overflow-hidden pb-8 pt-8 sm:pb-14 lg:pb-16 lg:pt-10"
+    >
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-x-0 top-0 h-[620px] lp-grid" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#0B0B0C] to-transparent" />
+      </div>
 
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/35">
-              Ежедневный планер
+      <div className="lp-container relative">
+        <div className="grid items-center gap-12 pt-6 sm:pt-8 lg:grid-cols-[1.02fr_0.98fr] lg:gap-6 lg:pt-10">
+          <div className="relative z-10">
+            <p data-hero-fade className="lp-label">
+              Система дисциплины
             </p>
-            <p className="mt-1.5 font-display text-[19px] font-bold tracking-tight">Сегодня</p>
-          </div>
-          <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] text-white/45">
-            {date || '—'}
-          </span>
-        </div>
 
-        <div className="mt-5 flex items-center justify-between rounded-2xl border border-white/[0.07] bg-white/[0.02] px-4 py-3.5">
-          <div className="flex items-center gap-3">
-            <span className="grid h-9 w-9 place-items-center rounded-full border border-neon/25 bg-neon/10 text-neon">
-              <Flame className="h-4 w-4" />
-            </span>
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.18em] text-white/35">Серия</p>
-              <p className="font-display text-[17px] font-bold leading-tight">
-                {streak}
-                <span className="ml-1.5 text-[11px] font-medium text-white/40">дней подряд</span>
-              </p>
+            <h1 className="lp-h1 mt-5 sm:mt-6">
+              <span className="block overflow-hidden pb-[0.08em]">
+                <span data-hero-line className="block whitespace-nowrap">
+                  Дисциплина —
+                </span>
+              </span>
+              <span className="block overflow-hidden pb-[0.08em]">
+                <span data-hero-line className="block whitespace-nowrap">
+                  это <span className="lp-mark">свобода.</span>
+                </span>
+              </span>
+            </h1>
+
+            <p
+              data-hero-fade
+              className="mt-6 max-w-[490px] text-[15.5px] leading-[1.7] text-ash sm:mt-7 sm:text-[16.5px]"
+            >
+              Не мотивация и не очередной курс. Система, которая держит ритм,
+              когда желание пропало. Две минуты утром, пять вечером — и день
+              перестаёт рассыпаться.
+            </p>
+
+            <div data-hero-fade className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <a href="#pricing" className="lp-btn lp-btn-acid w-full sm:w-auto">
+                Начать сегодня
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <a href="#potential" className="lp-btn lp-btn-ghost w-full sm:w-auto">
+                Как это работает
+              </a>
+            </div>
+
+            <p data-hero-fade className="mt-3 text-[11.5px] text-ash">
+              14 дней гарантии · отмена в один клик
+            </p>
+
+            <button
+              type="button"
+              data-hero-fade
+              onClick={auth.open}
+              className="mt-4 text-[12.5px] font-medium text-paper/50 underline-offset-4 transition hover:text-paper hover:underline"
+            >
+              Уже в системе? Войти в кабинет
+            </button>
+
+            <div data-hero-fade className="mt-8 flex flex-wrap items-center gap-5">
+              <div className="flex -space-x-2.5">
+                {['kirill', 'maria', 'alexey', 'olga', 'dmitry'].map((name) => (
+                  <img
+                    key={name}
+                    src={`/reviews/${name}.jpg`}
+                    alt=""
+                    loading="lazy"
+                    className="h-9 w-9 rounded-full border-2 border-[#0B0B0C] object-cover grayscale-[0.2]"
+                  />
+                ))}
+                <span className="grid h-9 w-9 place-items-center rounded-full border-2 border-[#0B0B0C] bg-paper/10 font-heading text-[10px] font-semibold text-paper/70">
+                  +2k
+                </span>
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="flex items-center gap-0.5 text-acid" aria-hidden>
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <span key={index} className="text-[11px] leading-none">
+                        ★
+                      </span>
+                    ))}
+                  </span>
+                  <span className="text-[12.5px] font-semibold text-paper/85">4.9 из 5</span>
+                </div>
+                <p className="mt-1 text-[11.5px] text-ash">2 400+ участников</p>
+              </div>
+            </div>
+
+            <div className="mt-9 grid max-w-[520px] grid-cols-3 border-y border-line">
+              {HERO_STATS.map((item) => (
+                <div
+                  key={item.label}
+                  data-hero-stat
+                  className="px-4 py-4 first:pl-0 last:pr-0 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-line"
+                >
+                  <p className="lp-display text-[30px] leading-none sm:text-[34px]">{item.value}</p>
+                  <p className="mt-2 text-[10.5px] font-medium tracking-[0.01em] text-ash">
+                    {item.label}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
-          <div className="relative h-5 w-16">
-            {spark > 0 && (
+
+          <div className="relative">
+            <IPhoneShowcase />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   Бегущая строка
+   ============================================================ */
+
+const TICKER = [
+  'Планер',
+  'Мини-трекеры',
+  'Марафоны',
+  'Дневник',
+  'База знаний',
+  'Сообщество',
+  'Заморозки',
+  'Статистика',
+  '14 дней гарантии',
+  '2 400+ участников',
+];
+
+export function Ticker() {
+  return (
+    <div className="lp-ticker" aria-hidden>
+      <div className="lp-marquee">
+        {[0, 1].map((copy) => (
+          <div key={copy} className="flex shrink-0 items-center">
+            {TICKER.map((item) => (
               <span
-                key={spark}
-                className="animate-spark absolute right-0 top-0 whitespace-nowrap text-[11px] font-semibold text-neon"
+                key={`${copy}-${item}`}
+                className="flex items-center gap-8 px-7 font-heading text-[12.5px] font-medium uppercase tracking-[0.08em] text-paper/50"
               >
-                +1 день
+                {item}
+                <span className="text-acid/80">✳</span>
               </span>
-            )}
+            ))}
           </div>
-        </div>
-
-        <ul className="mt-5 space-y-1">
-          {HABITS.map((habit, index) => (
-            <li key={habit}>
-              <button
-                type="button"
-                onClick={() => toggle(index)}
-                aria-pressed={done[index]}
-                className="group flex w-full items-center gap-3 rounded-xl px-2.5 py-2.5 text-left transition-colors hover:bg-white/[0.04] active:scale-[0.99]"
-              >
-                <span
-                  className={`grid h-[20px] w-[20px] shrink-0 place-items-center rounded-full border transition-all duration-300 ${
-                    done[index]
-                      ? 'border-neon bg-neon text-ink shadow-[0_0_18px_-2px_rgba(0,229,143,0.8)]'
-                      : 'border-white/15 text-transparent group-hover:border-white/30'
-                  }`}
-                >
-                  {done[index] && <Check className="animate-check h-3 w-3" strokeWidth={3.2} />}
-                </span>
-                <span
-                  className={`text-[13.5px] transition-colors ${
-                    done[index] ? 'text-white/85' : 'text-white/45'
-                  }`}
-                >
-                  {habit}
-                </span>
-                <span className="ml-auto font-mono text-[10px] text-white/20">
-                  0{index + 1}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-5 border-t border-white/[0.07] pt-4">
-          <div className="flex items-center justify-between text-[11px]">
-            <span className="text-white/35">Выполнено</span>
-            <span className="font-mono text-white/55">
-              {completed} / {done.length}
-            </span>
-          </div>
-          <div className="mt-2.5 h-1 w-full overflow-hidden rounded-full bg-white/[0.07]">
-            <div
-              className="h-full rounded-full bg-neon transition-all duration-500 ease-out"
-              style={{ width: `${progress}%`, boxShadow: '0 0 14px rgba(0,229,143,0.6)' }}
-            />
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
 }
 
-export function Hero() {
-  const auth = useAuthModal();
+/* ============================================================
+   Узнаёшь себя?
+   ============================================================ */
 
+const PAINS = [
+  {
+    title: 'Понедельник — новая жизнь',
+    text: 'К среде запал кончается, к пятнице приходит вина. И так по кругу.',
+  },
+  {
+    title: 'Ждёшь, когда захочется',
+    text: 'Мотивация не приходит по расписанию. Поэтому важное стоит на месте.',
+  },
+  {
+    title: 'Всё держится в голове',
+    text: 'Задачи, привычки, обещания себе. Что-то обязательно теряется.',
+  },
+  {
+    title: 'Ты один против всех',
+    text: 'Нет людей рядом, которые заметят, если ты пропал на неделю.',
+  },
+];
+
+export function Pain() {
   return (
-    <section className="relative overflow-hidden pb-4 pt-10 md:pb-8 md:pt-14">
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-x-0 top-0 h-[520px] grid-lines opacity-50" />
-        <div className="absolute left-1/2 top-[-260px] h-[560px] w-[860px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(255,255,255,0.075),transparent)] blur-2xl" />
-        <div className="absolute -left-32 top-32 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgba(255,255,255,0.06),transparent)] blur-3xl" />
-        <div className="absolute -right-40 top-10 h-96 w-96 rounded-full bg-[radial-gradient(closest-side,rgba(120,150,255,0.09),transparent)] blur-3xl" />
-      </div>
+    <section id="pain" className="lp-section border-t border-line">
+      <div className="lp-container">
+        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+          <div data-reveal>
+            <p className="lp-label">Знакомо?</p>
+            <h2 className="lp-h2 mt-5">
+              Ты не ленивый.
+              <br />
+              Ты <span className="lp-mark">без системы.</span>
+            </h2>
+            <p className="lp-lead mt-6 max-w-[400px]">
+              Сила воли — плохой фундамент. Она заканчивается ровно тогда, когда
+              нужна больше всего. ЛВС убирает необходимость каждый день
+              уговаривать себя начать.
+            </p>
+          </div>
 
-      <div className="container-x relative grid items-center gap-12 lg:grid-cols-[1.02fr_0.98fr] lg:gap-16">
-        <div>
-          <motion.span
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="eyebrow"
-          >
-            <span className="eyebrow-dot" />
-            Лучшая версия себя
-          </motion.span>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 26 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.06 }}
-            className="display mt-6 text-[44px] leading-[0.95] sm:text-[60px] lg:text-[68px]"
-          >
-            Дисциплина —<br />
-            это{' '}
-            <span className="relative inline-block">
-              свобода
-              <svg
-                aria-hidden
-                viewBox="0 0 200 12"
-                preserveAspectRatio="none"
-                className="absolute -bottom-[10px] left-0 h-[9px] w-full text-neon/65"
-              >
-                <path
-                  d="M2 8.5C46 3.5 120 2.5 198 6.5"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  fill="none"
-                />
-              </svg>
-            </span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 26 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.14 }}
-            className="mt-6 max-w-[460px] text-[15px] leading-relaxed text-white/50 sm:text-base"
-          >
-            Один планер, мини-трекеры, марафоны и дневник. Система, которая держит ритм
-            и считает дни за тебя.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 26 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.22 }}
-            className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
-          >
-            <a
-              href="#pricing"
-              className="btn group w-full border border-white/25 bg-white/[0.03] !px-8 !py-3.5 text-[14px] text-white backdrop-blur transition duration-300 hover:border-white/50 hover:bg-white/[0.07] hover:shadow-[0_0_44px_-10px_rgba(255,255,255,0.45)] sm:w-auto"
-            >
-              Смотреть тарифы
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </a>
-            <button
-              type="button"
-              onClick={auth.open}
-              className="btn w-full border border-white/15 bg-transparent !px-7 !py-3.5 text-[14px] text-white/85 transition duration-300 hover:border-white/35 hover:bg-white/[0.05] hover:text-white hover:shadow-[0_0_34px_-12px_rgba(255,255,255,0.4)] sm:w-auto"
-            >
-              Войти
-            </button>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.9, delay: 0.4 }}
-            className="mt-8 hidden flex-wrap items-center gap-x-3 gap-y-2 text-[10px] uppercase tracking-[0.18em] text-white/25 sm:flex"
-          >
-            <span>Планер</span>
-            <span className="h-1 w-1 rounded-full bg-white/25" />
-            <span>Мини-трекеры</span>
-            <span className="h-1 w-1 rounded-full bg-white/25" />
-            <span>Марафоны</span>
-            <span className="h-1 w-1 rounded-full bg-white/25" />
-            <span>Дневник</span>
-          </motion.div>
-        </div>
-
-        <div className="relative flex justify-center lg:justify-end">
           <div
-            aria-hidden
-            className="pointer-events-none absolute -right-6 -top-8 h-24 w-24 rotate-12 rounded-[22px] border border-white/10 bg-gradient-to-br from-white/[0.09] to-transparent shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_30px_60px_-30px_rgba(0,0,0,0.9)] backdrop-blur-md"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -bottom-6 -left-2 h-16 w-16 -rotate-6 rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.06] to-transparent backdrop-blur-md"
-          />
-          <PlannerCard />
+            data-reveal
+            className="grid gap-px overflow-hidden rounded-[12px] border border-line bg-line sm:grid-cols-2"
+          >
+            {PAINS.map((item) => (
+              <article key={item.title} className="bg-[#0C0C0D] p-5 sm:p-6">
+                <h3 className="font-heading text-[17px] font-medium uppercase tracking-[0.01em] text-paper">
+                  {item.title}
+                </h3>
+                <p className="mt-2.5 text-[13px] leading-[1.65] text-ash">{item.text}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -790,104 +870,98 @@ export function Hero() {
 
 const FEATURES = [
   {
-    icon: CalendarDays,
     title: 'Ежедневный планер',
-    text: 'Планируйте день заранее. Отмечайте выполненное — серия растёт, а вы остаётесь в ритме.',
+    text: 'Утром две минуты — и день расписан. Вечером пять — и видно, что ты не слил его.',
   },
   {
-    icon: Activity,
     title: 'Мини-трекеры',
-    text: 'Вода, сон, ходьба и другие базовые привычки — в компактном виде и без лишних усилий.',
+    text: 'Вода, сон, ходьба, спорт. Не «когда-нибудь», а сегодня. Без таблиц на полстены.',
   },
   {
-    icon: Trophy,
     title: 'Марафоны',
-    text: 'Челленджи с заданиями и сроками. Выполняйте задания и сдавайте отчёты в пару касаний.',
+    text: 'Группа, дедлайн, отчёт. Не даст бросить на третий день и вернуться к нулю.',
   },
   {
-    icon: BookOpen,
     title: 'Дневник',
-    text: 'Рефлексия и заметки: что получилось сегодня и что стоит изменить завтра.',
+    text: 'Вечерний разбор: что сработало, что слить, что повторить завтра.',
   },
 ];
 
 export function Potential() {
   return (
-    <section id="potential" className="container-x scroll-mt-24 py-10 md:py-20">
-      <div className="mx-auto max-w-2xl text-center">
-        <motion.span
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6 }}
-          className="eyebrow"
-        >
-          <span className="eyebrow-dot" />
-          Возможности
-        </motion.span>
-        <motion.h2
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, delay: 0.06 }}
-          className="section-title mt-6"
-        >
-          Раскрой свой потенциал на максимум
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, delay: 0.12 }}
-          className="section-subtitle"
-        >
-          Четыре инструмента, которые работают вместе — чтобы не терять импульс
-          и не возвращаться к нулю.
-        </motion.p>
-      </div>
+    <section id="potential" className="lp-section border-t border-line">
+      <div className="lp-container grid gap-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
+        <div data-reveal className="lg:sticky lg:top-28 lg:self-start">
+          <p className="lp-label">Что внутри</p>
+          <h2 className="lp-h2 mt-5">
+            Четыре инструмента.
+            <br />
+            Один <span className="lp-mark">ритм.</span>
+          </h2>
+          <p className="lp-lead mt-6 max-w-[360px]">
+            Не набор разрозненных функций, а связная система. Каждый инструмент
+            подхватывает следующий — чтобы не терять импульс и не возвращаться к нулю.
+          </p>
+          <Link href="/login" className="lp-link mt-8">
+            Открыть систему
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
 
-      <div className="mt-10 grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
-        {FEATURES.map((feature, index) => {
-          const Icon = feature.icon;
-          return (
-            <motion.article
+        <div className="border-t border-line">
+          {FEATURES.map((feature) => (
+            <article
               key={feature.title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.6, delay: index * 0.07 }}
-              className="card card-hover group flex h-full flex-col p-6"
+              data-reveal
+              className="group grid grid-cols-[1fr_auto] items-start gap-4 border-b border-line py-7 sm:gap-6 sm:py-8"
             >
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-neon/70 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-              />
-              <span className="relative grid h-12 w-12 place-items-center rounded-2xl border border-white/[0.12] bg-gradient-to-b from-white/[0.1] to-white/[0.02] text-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_18px_30px_-22px_rgba(0,0,0,0.9)] transition-all duration-500 group-hover:border-white/25 group-hover:text-neon">
-                <Icon className="h-[19px] w-[19px]" strokeWidth={1.6} />
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 rounded-2xl bg-[radial-gradient(circle_at_30%_0%,rgba(255,255,255,0.16),transparent_65%)]"
-                />
-              </span>
-              <h3 className="mt-6 font-display text-[17px] font-bold leading-snug">
-                {feature.title}
-              </h3>
-              <p className="mt-3 flex-1 text-[13.5px] leading-relaxed text-white/55">
-                {feature.text}
-              </p>
-            </motion.article>
-          );
-        })}
+              <div>
+                <h3 className="lp-h3 transition-colors duration-300 group-hover:text-acid">
+                  {feature.title}
+                </h3>
+                <p className="mt-2.5 max-w-[520px] text-[14px] leading-[1.7] text-ash sm:text-[15px]">
+                  {feature.text}
+                </p>
+              </div>
+              <ArrowUpRight className="mt-1 h-5 w-5 text-paper/20 transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-acid" />
+            </article>
+          ))}
+        </div>
       </div>
+    </section>
+  );
+}
 
-      <div className="mt-10 flex justify-center">
-        <Link
-          href="/login"
-          className="btn group border border-white/25 bg-white/[0.03] !px-8 !py-4 text-[14px] text-white transition duration-300 hover:border-white/50 hover:bg-white/[0.07] hover:shadow-[0_0_44px_-10px_rgba(255,255,255,0.45)]"
+/* ============================================================
+   Гарантия
+   ============================================================ */
+
+export function Guarantee() {
+  return (
+    <section id="guarantee" className="border-y border-acid/25 bg-acid text-[#0A0A0A]">
+      <div className="lp-container flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between sm:py-10">
+        <div className="flex items-start gap-4">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-[8px] bg-[#0A0A0A] text-acid">
+            <ShieldCheck className="h-5 w-5" strokeWidth={2} />
+          </span>
+          <div>
+            <p className="font-heading text-[24px] font-semibold uppercase leading-[1.02] sm:text-[30px]">
+              14 дней в системе.
+              <br /> Не войдёшь в ритм — вернём деньги.
+            </p>
+            <p className="mt-2 max-w-[560px] text-[12.5px] leading-[1.6] text-[#0A0A0A]/65">
+              Без мелкого шрифта и условий-ловушек. Если за две недели не станет
+              яснее, как держать ритм, — вернём оплату.
+            </p>
+          </div>
+        </div>
+        <a
+          href="#pricing"
+          className="lp-btn shrink-0 bg-[#0A0A0A] text-acid hover:bg-[#151515]"
         >
-          Начать использовать планер
-          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-        </Link>
+          Проверить на себе
+          <ArrowUpRight className="h-4 w-4" />
+        </a>
       </div>
     </section>
   );
@@ -899,201 +973,56 @@ export function Potential() {
 
 const ECOSYSTEM = [
   {
-    icon: BookOpen,
     title: 'База знаний',
-    text: 'Получайте доступ к полезным материалам, статьям и гайдам по сну, питанию и дисциплине.',
+    text: '194 статьи без воды: сон, питание, фокус, деньги, дисциплина. Читаешь — и сразу применяешь.',
   },
   {
-    icon: Users,
     title: 'Активное сообщество',
-    text: 'Общайтесь с единомышленниками, участвуйте в марафонах и делитесь успехами в закрытом Telegram-канале.',
+    text: '2 400 человек, которые тоже встают и делают. Онлайн и офлайн, без токсичности и мотивационного шума.',
   },
   {
-    icon: HeartHandshake,
     title: 'Поддержка и кураторство',
-    text: 'Не оставайтесь один на один с прокрастинацией — получайте поддержку и мотивацию.',
+    text: 'Живой куратор заметит, если ты пропал, и вернёт в ритм без чувства вины.',
   },
 ];
 
-function TelegramMockup() {
-  return (
-    <div className="relative mx-auto w-full max-w-[336px]">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -inset-10 rounded-[56px] bg-[radial-gradient(closest-side,rgba(255,255,255,0.1),transparent)] blur-2xl"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-7 top-20 h-24 w-24 rotate-12 rounded-[22px] border border-white/10 bg-gradient-to-br from-white/[0.09] to-transparent shadow-[inset_0_1px_0_rgba(255,255,255,0.16)] backdrop-blur-md"
-      />
-
-      <div className="relative overflow-hidden rounded-[34px] border border-white/[0.12] bg-[#0d0d10] shadow-[0_60px_140px_-50px_rgba(0,0,0,1)]">
-        <div className="flex items-center justify-between border-b border-white/[0.06] px-4 py-2.5 text-[10px] text-white/30">
-          <span>9:41</span>
-          <span className="flex items-center gap-1.5">
-            <span className="h-1 w-1 rounded-full bg-white/30" />
-            LTE
-          </span>
-        </div>
-
-        <div className="flex items-center gap-3 border-b border-white/[0.06] px-4 py-3">
-          <span className="grid h-9 w-9 place-items-center rounded-full border border-white/15 bg-gradient-to-br from-white/20 to-white/[0.03] text-[11px] font-bold text-white">
-            Л
-          </span>
-          <div className="min-w-0">
-            <p className="text-[12.5px] font-semibold text-white">ЛВС · Бот</p>
-            <p className="text-[10px] text-neon/70">в сети</p>
-          </div>
-          <span className="ml-auto grid h-8 w-8 place-items-center rounded-full border border-white/10 text-white/30">
-            <Bell className="h-3.5 w-3.5" strokeWidth={1.6} />
-          </span>
-        </div>
-
-        <div className="space-y-2.5 px-3.5 py-4">
-          <div className="max-w-[88%] rounded-2xl rounded-tl-md border border-white/[0.08] bg-white/[0.05] px-3.5 py-2.5">
-            <p className="text-[11.5px] leading-relaxed text-white/75">
-              Доброе утро. План на сегодня готов: 4 задачи и 3 привычки.
-            </p>
-          </div>
-
-          <div className="max-w-[92%] rounded-2xl rounded-tl-md border border-white/[0.08] bg-white/[0.04] p-3">
-            <div className="flex items-center gap-2 text-[9.5px] uppercase tracking-[0.16em] text-white/35">
-              <Flame className="h-3 w-3 text-[#FF5A36]" strokeWidth={2} /> Серия
-            </div>
-            <p className="mt-1 font-display text-[20px] font-bold leading-none text-white">
-              14 <span className="text-[11px] font-medium text-white/40">дней подряд</span>
-            </p>
-            <div className="mt-2.5 h-1 overflow-hidden rounded-full bg-white/[0.08]">
-              <div className="h-full w-[72%] rounded-full bg-neon/80" />
-            </div>
-          </div>
-
-          <div className="ml-auto max-w-[78%] rounded-2xl rounded-tr-md border border-white/[0.1] bg-white/[0.09] px-3.5 py-2.5">
-            <p className="text-[11.5px] leading-relaxed text-white/85">Тренировка готова ✅</p>
-          </div>
-
-          <div className="max-w-[88%] rounded-2xl rounded-tl-md border border-white/[0.08] bg-white/[0.05] px-3.5 py-2.5">
-            <p className="text-[11.5px] leading-relaxed text-white/75">
-              Принято. +1 к серии — вечером не забудь про дневник.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-1.5 pt-1">
-            <span className="rounded-xl border border-white/10 bg-white/[0.04] px-2 py-2 text-center text-[10.5px] text-white/70">
-              Открыть планер
-            </span>
-            <span className="rounded-xl border border-white/10 bg-white/[0.04] px-2 py-2 text-center text-[10.5px] text-white/70">
-              Оценить день
-            </span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 border-t border-white/[0.06] px-3.5 py-3">
-          <span className="flex-1 rounded-full border border-white/[0.08] bg-white/[0.03] px-3.5 py-2 text-[10.5px] text-white/25">
-            Написать сообщение…
-          </span>
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-white/90 text-black">
-            <Send className="h-3.5 w-3.5" strokeWidth={2} />
-          </span>
-        </div>
-      </div>
-
-      <div className="absolute -bottom-14 left-1/2 z-10 hidden w-max -translate-x-1/2 rounded-2xl border border-white/[0.1] bg-[#141416]/95 px-4 py-2.5 shadow-[0_24px_60px_-24px_rgba(0,0,0,1)] backdrop-blur-xl sm:block">
-        <div className="flex items-center gap-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#FF5A36]" />
-          <p className="text-[9.5px] uppercase tracking-[0.16em] text-white/40">Напоминание</p>
-        </div>
-        <p className="mt-1 text-[11px] text-white/80">Вечерний дневник · 21:30</p>
-      </div>
-    </div>
-  );
-}
-
 export function Ecosystem() {
   return (
-    <section id="about" className="container-x scroll-mt-24 py-10 md:py-20">
-      <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
-        <div>
-          <motion.span
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.6 }}
-            className="eyebrow"
-          >
-            <span className="eyebrow-dot" />
-            Экосистема
-          </motion.span>
+    <section id="about" className="lp-section overflow-hidden border-t border-line bg-[#0D0D0E]">
+      <div className="lp-container">
+        <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-20">
+          <div data-reveal>
+            <p className="lp-label">Среда</p>
+            <h2 className="lp-h2 mt-5">
+              Не просто трекер.
+              <br />
+              Твоя <span className="lp-mark">среда.</span>
+            </h2>
+            <p className="lp-lead mt-6 max-w-[440px]">
+              Инструменты — половина дела. Вторая половина — люди, которые заметят,
+              если ты пропал, и знания, которые не дают сойти с дистанции.
+            </p>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7, delay: 0.06 }}
-            className="section-title mt-5"
-          >
-            Не просто трекер —<br className="hidden sm:block" /> среда, которая держит в ритме
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7, delay: 0.12 }}
-            className="mt-4 max-w-[520px] text-[14px] leading-relaxed text-white/45 sm:text-[15px]"
-          >
-            Инструменты — только половина дела. Вторая половина — знания, люди
-            и поддержка, которые не дают сойти с дистанции.
-          </motion.p>
-
-          <div className="mt-7 divide-y divide-white/[0.07] border-y border-white/[0.07]">
-            {ECOSYSTEM.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <motion.div
+            <div className="mt-9 border-t border-line">
+              {ECOSYSTEM.map((item) => (
+                <div
                   key={item.title}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 0.55, delay: index * 0.08 }}
-                  className="group flex gap-4 py-5"
+                  data-reveal
+                  className="border-b border-line py-5"
                 >
-                  <span className="relative mt-0.5 grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-white/[0.1] bg-gradient-to-b from-white/[0.09] to-white/[0.02] text-white/65 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] transition-all duration-500 group-hover:border-white/25 group-hover:text-white">
-                    <Icon className="h-[18px] w-[18px]" strokeWidth={1.6} />
-                  </span>
-                  <div>
-                    <div className="flex items-baseline gap-3">
-                      <span className="font-mono text-[10px] tracking-[0.18em] text-white/20">
-                        0{index + 1}
-                      </span>
-                      <h3 className="font-display text-[16px] font-bold leading-snug">
-                        {item.title}
-                      </h3>
-                    </div>
-                    <p className="mt-1.5 text-[13px] leading-relaxed text-white/50">
-                      {item.text}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })}
+                  <h3 className="font-heading text-[14px] font-medium uppercase tracking-[0.06em] text-paper">{item.title}</h3>
+                  <p className="mt-1.5 max-w-[440px] text-[13px] leading-[1.7] text-ash">
+                    {item.text}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-2 text-[9.5px] uppercase tracking-[0.16em] text-white/30">
-            <span className="rounded-full border border-white/[0.1] px-3 py-1.5">Закрытый канал</span>
-            <span className="rounded-full border border-white/[0.1] px-3 py-1.5">Кураторы</span>
-            <span className="rounded-full border border-white/[0.1] px-3 py-1.5">Гайды и разборы</span>
+          <div data-reveal className="lg:pl-4">
+            <AppWindowShowcase />
           </div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-        >
-          <TelegramMockup />
-        </motion.div>
       </div>
     </section>
   );
@@ -1197,136 +1126,132 @@ export function Reviews() {
   const review = REVIEWS[index];
 
   return (
-    <section id="reviews" className="container-x scroll-mt-24 py-10 md:py-20">
-      <div className="mx-auto max-w-2xl text-center">
-        <motion.span
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6 }}
-          className="eyebrow"
-        >
-          <span className="eyebrow-dot" />
-          Отзывы
-        </motion.span>
-        <motion.h2
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, delay: 0.06 }}
-          className="section-title mt-6"
-        >
-          Люди становятся лучше
-        </motion.h2>
-      </div>
+    <section id="reviews" className="lp-section border-t border-line bg-[#0D0D0E]">
+      <div className="lp-container grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
+        <div data-reveal>
+          <p className="lp-label">Отзывы</p>
+          <h2 className="lp-h2 mt-5">
+            Они уже
+            <br />
+            <span className="lp-mark">в ритме.</span>
+          </h2>
+          <p className="mt-5 max-w-[300px] text-[13px] leading-[1.65] text-ash">
+            Не верь на слово. Вот что изменилось у людей, которые дошли.
+          </p>
 
-      <div className="relative mx-auto mt-10 max-w-4xl">
-        <div className="card relative overflow-hidden p-6 sm:p-9">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-white/[0.04] blur-3xl"
-          />
+          <div className="mt-8 flex items-center gap-4">
+            <div className="flex -space-x-2.5">
+              {['kirill', 'maria', 'olga', 'anna'].map((name) => (
+                <img
+                  key={name}
+                  src={`/reviews/${name}.jpg`}
+                  alt=""
+                  loading="lazy"
+                  className="h-9 w-9 rounded-full border-2 border-[#0D0D0E] object-cover grayscale-[0.2]"
+                />
+              ))}
+            </div>
+            <div>
+              <p className="font-heading text-[13px] font-semibold text-paper/85">4.9 из 5</p>
+              <p className="mt-1 text-[11.5px] text-ash">2 400+ участников</p>
+            </div>
+          </div>
+
+          <div className="mt-9 flex items-center gap-2.5">
+            <button
+              type="button"
+              onClick={() => go(-1)}
+              aria-label="Предыдущий отзыв"
+              className="grid h-11 w-11 place-items-center rounded-[10px] border border-line text-paper/60 transition hover:border-paper/40 hover:text-paper active:scale-[0.98]"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              aria-label="Следующий отзыв"
+              className="grid h-11 w-11 place-items-center rounded-[10px] border border-line text-paper/60 transition hover:border-paper/40 hover:text-paper active:scale-[0.98]"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+            <span className="ml-2 text-[11.5px] tabular-nums text-ash">
+              {String(index + 1).padStart(2, '0')} / {String(REVIEWS.length).padStart(2, '0')}
+            </span>
+          </div>
+        </div>
+
+        <div data-reveal className="relative">
           <AnimatePresence mode="wait" initial={false} custom={direction}>
-            <motion.div
+            <motion.figure
               key={review.name}
               custom={direction}
-              initial={{ opacity: 0, x: direction * 36 }}
+              initial={{ opacity: 0, x: direction * 26 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: direction * -36 }}
+              exit={{ opacity: 0, x: direction * -26 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.12}
+              dragElastic={0.1}
               onDragEnd={(_, info) => {
                 if (info.offset.x < -60) go(1);
                 else if (info.offset.x > 60) go(-1);
               }}
-              className="grid cursor-grab gap-7 active:cursor-grabbing md:grid-cols-[168px_1fr] md:items-start md:gap-9"
+              className="cursor-grab active:cursor-grabbing"
             >
-              <div className="relative mx-auto w-[132px] shrink-0 md:mx-0 md:w-[168px]">
+              <div className="flex items-center gap-4">
                 <img
                   src={review.photo}
                   alt={`${review.name}, ${review.meta}`}
                   loading="lazy"
-                  className="aspect-square w-full rounded-[20px] border border-white/10 object-cover grayscale-[0.15]"
+                  className="h-16 w-16 rounded-full border border-line object-cover grayscale-[0.15]"
                 />
-                <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-neon/25 bg-black/85 px-3 py-1 font-mono text-[10px] text-neon backdrop-blur">
-                  {review.result}
-                </span>
-              </div>
-
-              <div>
-                <div className="flex items-center gap-1 text-neon/80" aria-hidden>
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <span key={i} className="text-[13px] leading-none">
-                      ★
-                    </span>
-                  ))}
-                </div>
-                <blockquote className="mt-4 text-[14.5px] leading-relaxed text-white/60 sm:text-[15.5px]">
-                  «{review.text}»
-                </blockquote>
-                <div className="mt-6 flex items-center gap-3">
-                  <span className="h-px w-6 bg-neon/50" />
-                  <p className="text-[13.5px] font-semibold text-white">
+                <div>
+                  <p className="text-[15px] font-semibold text-paper">
                     {review.name}
-                    <span className="ml-1.5 font-normal text-white/35">{review.meta}</span>
+                    <span className="ml-2 font-normal text-ash">{review.meta}</span>
+                  </p>
+                  <p className="mt-1.5 text-[11.5px] font-semibold text-acid">
+                    {review.result}
                   </p>
                 </div>
               </div>
-            </motion.div>
+
+              <blockquote className="lp-quote mt-8">«{review.text}»</blockquote>
+
+              <figcaption className="mt-8 flex flex-wrap items-center gap-3 border-t border-line pt-5">
+                <span className="flex items-center gap-1 text-acid" aria-hidden>
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <span key={i} className="text-[12px] leading-none">
+                      ★
+                    </span>
+                  ))}
+                </span>
+                <span className="text-[11.5px] text-ash">
+                  Проверенный участник
+                </span>
+              </figcaption>
+            </motion.figure>
           </AnimatePresence>
-        </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <span className="numeric text-[11px] text-white/40">
-              {String(index + 1).padStart(2, '0')}
-              <span className="text-white/15"> / {String(REVIEWS.length).padStart(2, '0')}</span>
-            </span>
-            <div className="flex items-center gap-1.5" role="tablist" aria-label="Отзывы">
-              {REVIEWS.map((item, i) => (
-                <button
-                  key={item.name}
-                  type="button"
-                  role="tab"
-                  aria-selected={i === index}
-                  aria-label={`Отзыв: ${item.name}`}
-                  onClick={() => {
-                    playSound('soft');
-                    setDirection(i > index ? 1 : -1);
-                    setIndex(i);
-                  }}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    i === index ? 'w-6 bg-white' : 'w-1.5 bg-white/15 hover:bg-white/30'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="hidden text-[9.5px] uppercase tracking-[0.16em] text-white/20 sm:block">
-              Листайте
-            </span>
-            <div className="flex items-center gap-2">
+          <div className="mt-9 flex flex-wrap gap-1.5" role="tablist" aria-label="Отзывы">
+            {REVIEWS.map((item, i) => (
               <button
+                key={item.name}
                 type="button"
-                onClick={() => go(-1)}
-                aria-label="Предыдущий отзыв"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-white/60 transition hover:border-white/25 hover:text-white active:scale-[0.98]"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => go(1)}
-                aria-label="Следующий отзыв"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-white/60 transition hover:border-white/30 hover:bg-white/[0.07] hover:text-white active:scale-[0.98]"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
+                role="tab"
+                aria-selected={i === index}
+                aria-label={`Отзыв: ${item.name}`}
+                onClick={() => {
+                  playSound('soft');
+                  setDirection(i > index ? 1 : -1);
+                  setIndex(i);
+                }}
+                className={cn(
+                  'h-1.5 rounded-full transition-all duration-300',
+                  i === index ? 'w-8 bg-acid' : 'w-1.5 bg-paper/20 hover:bg-paper/40',
+                )}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -1352,7 +1277,11 @@ const PLANS: Plan[] = [
     name: 'Стандарт',
     price: '499',
     caption: 'Закрытое сообщество в Telegram',
-    features: ['Закрытый Telegram-канал', 'Общение с участниками', 'Еженедельные разборы прогресса'],
+    features: [
+      'Закрытый Telegram-канал',
+      'Общение с участниками',
+      'Еженедельные разборы прогресса',
+    ],
     cta: 'Оформить',
   },
   {
@@ -1384,112 +1313,98 @@ const PLANS: Plan[] = [
 
 export function Pricing() {
   return (
-    <section id="pricing" className="container-x scroll-mt-24 py-10 md:py-20">
-      <div className="mx-auto max-w-2xl text-center">
-        <motion.span
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6 }}
-          className="eyebrow"
+    <section id="pricing" className="lp-section border-t border-line">
+      <div className="lp-container">
+        <div
+          data-reveal
+          className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end"
         >
-          <span className="eyebrow-dot" />
-          Тарифы
-        </motion.span>
-        <motion.h2
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, delay: 0.06 }}
-          className="section-title mt-6"
-        >
-          Выберите свой темп роста
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, delay: 0.12 }}
-          className="section-subtitle"
-        >
-          Оплата ежемесячно. Доступ открывается автоматически через Telegram-бота.
-        </motion.p>
-      </div>
+          <div>
+            <p className="lp-label">Тарифы</p>
+            <h2 className="lp-h2 mt-5">
+              Три способа
+              <br />
+              <span className="lp-mark">войти в ритм.</span>
+            </h2>
+          </div>
+          <p className="max-w-[330px] text-[13px] leading-[1.7] text-ash">
+            Оплата ежемесячно. Без скрытых платежей. Отмена — в один клик.
+            14 дней гарантии возврата.
+          </p>
+        </div>
 
-      <div className="mt-10 grid auto-rows-fr items-stretch gap-4 md:grid-cols-3 lg:gap-5">
-        {PLANS.map((plan, index) => (
-          <motion.div
-            key={plan.name}
-            initial={{ opacity: 0, y: 26 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, delay: index * 0.08 }}
-            className={`card flex h-full flex-col p-7 sm:p-8 ${
-              plan.featured
-                ? 'border-white/20 bg-white/[0.035] shadow-[0_0_80px_-40px_rgba(255,255,255,0.45)]'
-                : 'card-hover'
-            }`}
-          >
-            {plan.featured && (
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent"
-              />
-            )}
-
-            <div className="flex items-center justify-between">
-              <h3 className="font-display text-[15px] font-bold uppercase tracking-[0.18em] text-white/85">
-                {plan.name}
-              </h3>
-              {plan.featured && (
-                <span className="rounded-full border border-white/20 bg-white/[0.06] px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[0.14em] text-white/70">
-                  Выбор большинства
-                </span>
+        <div className="mt-12 grid border-t border-line md:grid-cols-3">
+          {PLANS.map((plan) => (
+            <div
+              key={plan.name}
+              data-reveal
+              className={cn(
+                'relative flex flex-col border-b border-line py-8 md:border-b-0 md:border-r md:px-8 md:py-10 md:first:pl-0 md:last:border-r-0 md:last:pr-0',
+                plan.featured && 'bg-paper/[0.035] md:px-9',
               )}
-            </div>
-
-            <div className="mt-6 flex items-baseline gap-2">
-              <span className="display text-[42px] leading-none tracking-[-0.05em]">
-                {plan.price}
-              </span>
-              <span className="text-[12px] text-white/35">₽ / месяц</span>
-            </div>
-
-            <p className="mt-3 text-[12.5px] leading-relaxed text-white/40">{plan.caption}</p>
-
-            <div className="my-7 divider" />
-
-            <ul className="flex-1 space-y-3.5">
-              {plan.features.map((feature) => (
-                <li key={feature} className="flex items-start gap-3">
-                  <span className="mt-[3px] grid h-4 w-4 shrink-0 place-items-center rounded-full bg-neon/15 text-neon">
-                    <Check className="h-2.5 w-2.5" strokeWidth={3.4} />
-                  </span>
-                  <span className="text-[13px] leading-relaxed text-white/55">{feature}</span>
-                </li>
-              ))}
-            </ul>
-
-            <a
-              href="https://t.me/lvs_key_bot"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`btn mt-7 w-full border !py-3.5 text-[13px] ${
-                plan.featured
-                  ? 'border-white/30 bg-white/[0.08] text-white hover:border-white/50 hover:bg-white/[0.12] hover:shadow-[0_0_36px_-12px_rgba(255,255,255,0.4)]'
-                  : 'border-white/15 bg-white/[0.03] text-white/85 hover:border-white/30 hover:bg-white/[0.07] hover:text-white'
-              }`}
             >
-              {plan.cta}
-              <ArrowUpRight className="h-3.5 w-3.5 opacity-50" />
-            </a>
-          </motion.div>
-        ))}
-      </div>
+              {plan.featured ? (
+                <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-acid" />
+              ) : null}
 
-      <p className="mt-8 text-center text-[11.5px] text-white/25">
-        Отменить подписку можно в любой момент в Telegram-боте.
-      </p>
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="font-heading text-[14px] font-medium uppercase tracking-[0.08em] text-paper/85">
+                  {plan.name}
+                </h3>
+                {plan.featured ? (
+                  <span className="rounded-[6px] border border-acid/35 px-2 py-1 text-[10.5px] font-medium text-acid">
+                    Выбор большинства
+                  </span>
+                ) : null}
+              </div>
+
+              <div className="mt-8 flex items-baseline gap-2">
+                <span className="lp-display text-[54px] leading-none">{plan.price}</span>
+                <span className="text-[12px] text-ash">
+                  ₽ / мес
+                </span>
+              </div>
+
+              <p className="mt-3 text-[12.5px] leading-relaxed text-ash">{plan.caption}</p>
+
+              <ul className="mt-8 flex-1 space-y-3 border-t border-line pt-6">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-2.5 text-[13px] leading-relaxed text-paper/70">
+                    <Check className="mt-[3px] h-3.5 w-3.5 shrink-0 text-acid" strokeWidth={2.6} />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href="https://t.me/lvs_key_bot"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn('lp-btn mt-8 w-full', plan.featured ? 'lp-btn-acid' : 'lp-btn-ghost')}
+              >
+                {plan.cta}
+                <ArrowUpRight className="h-3.5 w-3.5 opacity-60" />
+              </a>
+            </div>
+          ))}
+        </div>
+
+        <div
+          data-reveal
+          className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-5"
+        >
+          <div className="flex flex-wrap gap-4 text-[11px] text-ash">
+            <span>Visa</span>
+            <span>Mastercard</span>
+            <span>МИР</span>
+            <span>Telegram</span>
+          </div>
+          <span className="inline-flex items-center gap-2 text-[11px] text-ash">
+            <ShieldCheck className="h-3.5 w-3.5 text-acid/70" />
+            Безопасная оплата · SSL/TLS
+          </span>
+        </div>
+      </div>
     </section>
   );
 }
@@ -1501,7 +1416,11 @@ export function Pricing() {
 const FAQ = [
   {
     q: 'У меня нет силы воли, постоянно всё бросаю. ЛВС поможет?',
-    a: 'ЛВС — это не просто трекер. Это система. Здесь нет токсичного чувства вины за пропущенные дни (для этого есть заморозки). Мы даем вам не только инструменты, но и Базу знаний, и закрытое сообщество, где вы не останетесь один на один с прокрастинацией.',
+    a: 'ЛВС не продаёт мотивацию. Это система: план на день, трекеры, марафоны и живой куратор. Когда желание пропадает, работают расписание и люди рядом. Пропущенный день не сжигает серию — для этого есть заморозки.',
+  },
+  {
+    q: 'Это очередная мотивация, которая выветрится через неделю?',
+    a: 'Нет. Мы не обещаем, что ты будешь хотеть каждый день. Мы делаем так, чтобы результат не зависел от настроения: короткие действия, видимый прогресс и среда, которая замечает твои пропуски.',
   },
   {
     q: 'В чём смысл марафонов и кураторства?',
@@ -1523,69 +1442,45 @@ const FAQ = [
     q: 'Если я пропущу день, всё сгорит?',
     a: 'Нет. В системе есть заморозки, которые сохраняют вашу серию. Главное правило ЛВС — не идеальность, а регулярное возвращение в ритм.',
   },
+  {
+    q: 'Вы реально вернёте деньги, если не подойдёт?',
+    a: 'Да. Даём 14 дней, чтобы попробовать систему без риска. Если за это время не станет яснее, как держать ритм, — напишите в поддержку, и мы вернём оплату.',
+  },
 ];
 
 export function Faq() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="container-x scroll-mt-24 py-10 md:py-20">
-      <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-        <div>
-          <motion.span
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.6 }}
-            className="eyebrow"
-          >
-            <span className="eyebrow-dot" />
-            FAQ
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7, delay: 0.06 }}
-            className="section-title mt-5 text-[28px] sm:text-[36px]"
-          >
-            Вопросы, которые<br className="hidden sm:block" /> обычно остаются за кадром
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7, delay: 0.12 }}
-            className="mt-4 max-w-[360px] text-[13.5px] leading-relaxed text-white/45"
-          >
-            Коротко о том, как устроена система и что именно вы получаете вместе с доступом.
-          </motion.p>
-          <motion.a
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+    <section id="faq" className="lp-section border-t border-line">
+      <div className="lp-container grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
+        <div data-reveal>
+          <p className="lp-label">Вопросы</p>
+          <h2 className="lp-h2 mt-5">
+            Без воды
+            <br />
+            и <span className="lp-mark">по делу.</span>
+          </h2>
+          <p className="lp-lead mt-6 max-w-[340px]">
+            Коротко о том, как устроена система, сколько времени она забирает
+            и что будет, если пропустить день.
+          </p>
+          <a
             href="https://t.me/lvs_key_bot"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-6 inline-flex items-center gap-2 text-[12.5px] text-white/45 transition hover:text-white"
+            className="lp-link mt-8"
           >
-            Задать свой вопрос в Telegram
+            Задать свой вопрос
             <ArrowUpRight className="h-3.5 w-3.5" />
-          </motion.a>
+          </a>
         </div>
 
-        <div className="divide-y divide-white/[0.07] border-y border-white/[0.07]">
+        <div className="border-t border-line">
           {FAQ.map((item, index) => {
             const isOpen = openIndex === index;
             return (
-              <motion.div
-                key={item.q}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.45, delay: index * 0.04 }}
-              >
+              <div key={item.q} data-reveal className="border-b border-line">
                 <button
                   type="button"
                   onClick={() => {
@@ -1593,22 +1488,20 @@ export function Faq() {
                     setOpenIndex(isOpen ? null : index);
                   }}
                   aria-expanded={isOpen}
-                  className="group flex w-full items-start gap-4 py-5 text-left"
+                  className="group flex w-full items-start gap-4 py-5 text-left sm:gap-5 sm:py-6"
                 >
-                  <span className="mt-[3px] font-mono text-[10px] tracking-[0.16em] text-white/20">
-                    0{index + 1}
-                  </span>
-                  <span className="flex-1 font-display text-[14.5px] font-semibold leading-snug text-white/85 transition group-hover:text-white sm:text-[15.5px]">
+                  <span className="flex-1 text-[15.5px] font-semibold leading-snug text-paper/85 transition group-hover:text-paper sm:text-[17px]">
                     {item.q}
                   </span>
                   <span
-                    className={`mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border transition-all duration-300 ${
+                    className={cn(
+                      'mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full border transition-all duration-300',
                       isOpen
-                        ? 'rotate-180 border-white/30 text-white'
-                        : 'border-white/10 text-white/30 group-hover:border-white/25 group-hover:text-white/70'
-                    }`}
+                        ? 'rotate-180 border-acid/50 text-acid'
+                        : 'border-paper/15 text-paper/35 group-hover:border-paper/40 group-hover:text-paper/70',
+                    )}
                   >
-                    <ChevronDown className="h-3.5 w-3.5" />
+                    <ChevronDown className="h-4 w-4" />
                   </span>
                 </button>
 
@@ -1621,15 +1514,204 @@ export function Faq() {
                       transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
                       className="overflow-hidden"
                     >
-                      <p className="pb-5 pl-[30px] pr-8 text-[12.5px] leading-relaxed text-white/50 sm:text-[13px]">
+                      <p className="pb-6 pr-8 text-[13.5px] leading-[1.75] text-ash sm:text-[14.5px]">
                         {item.a}
                       </p>
                     </motion.div>
                   ) : null}
                 </AnimatePresence>
-              </motion.div>
+              </div>
             );
           })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   Документы и доверие · в самом низу
+   ============================================================ */
+
+const DOCUMENTS = [
+  {
+    icon: FileText,
+    badge: 'Оферта',
+    title: 'Публичная оферта',
+    text: 'Условия доступа, тарифы и порядок оплаты.',
+    href: '/terms',
+    tag: 'Онлайн',
+  },
+  {
+    icon: ShieldCheck,
+    badge: 'Приватность',
+    title: 'Политика конфиденциальности',
+    text: 'Какие данные мы собираем и как их защищаем.',
+    href: '/privacy',
+    tag: 'Редакция 2026',
+  },
+  {
+    icon: ScrollText,
+    badge: 'Правила',
+    title: 'Пользовательское соглашение',
+    text: 'Правила использования платформы и аккаунта.',
+    href: '/terms',
+    tag: 'Онлайн',
+  },
+  {
+    icon: Fingerprint,
+    badge: 'Согласие',
+    title: 'Обработка данных',
+    text: 'Согласие на обработку персональных данных.',
+    href: '/privacy',
+    tag: 'Конфиденциально',
+  },
+  {
+    icon: Building2,
+    badge: 'Реквизиты',
+    title: 'Юридические реквизиты',
+    text: 'Данные организации и договорные условия.',
+    href: '/contacts',
+    tag: 'По запросу',
+  },
+  {
+    icon: Headphones,
+    badge: 'Поддержка',
+    title: 'Поддержка 24/7',
+    text: 'Ответим в течение рабочего дня в Telegram.',
+    href: '/contacts',
+    tag: '≈ 15 мин',
+  },
+];
+
+export function Trust() {
+  return (
+    <section id="trust" className="lp-section border-t border-line">
+      <div className="lp-container">
+        <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
+          <div data-reveal>
+            <p className="lp-label">Документы</p>
+            <h2 className="lp-h2 mt-5 text-[32px] sm:text-[42px]">
+              Всё <span className="lp-mark">официально.</span>
+            </h2>
+            <p className="mt-5 max-w-[350px] text-[13.5px] leading-[1.7] text-ash">
+              Документы, оплата и защита данных — на виду. Никаких мелких шрифтов
+              и скрытых условий: только понятные правила.
+            </p>
+
+            <div className="mt-7 flex flex-wrap gap-2">
+              {['Visa', 'Mastercard', 'МИР', 'Telegram'].map((method) => (
+                <span
+                  key={method}
+                  className="inline-flex items-center gap-1.5 rounded-[8px] border border-line px-2.5 py-1.5 text-[10.5px] text-paper/60"
+                >
+                  <CreditCard className="h-3 w-3 text-paper/30" />
+                  {method}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-6 space-y-2.5 border-t border-line pt-5 text-[11px] text-ash">
+              <p className="flex items-center gap-2">
+                <ShieldCheck className="h-3.5 w-3.5 text-acid/70" /> SSL/TLS · данные зашифрованы
+              </p>
+              <p className="flex items-center gap-2">
+                <Globe2 className="h-3.5 w-3.5 text-acid/70" /> Работаем в Казахстане и России
+              </p>
+              <p className="flex items-center gap-2">
+                <BadgeCheck className="h-3.5 w-3.5 text-acid/70" /> Договор оферты · закрывающие
+                документы
+              </p>
+            </div>
+          </div>
+
+          <div data-reveal className="grid border-t border-line sm:grid-cols-2">
+            {DOCUMENTS.map((doc) => {
+              const Icon = doc.icon;
+              return (
+                <a
+                  key={doc.title}
+                  href={doc.href}
+                  className="group flex flex-col border-b border-line p-5 transition-colors hover:bg-paper/[0.03] sm:odd:border-r sm:p-6"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <span className="grid h-9 w-9 place-items-center rounded-[6px] border border-line text-paper/50 transition-colors group-hover:border-acid/40 group-hover:text-acid">
+                      <Icon className="h-4 w-4" strokeWidth={1.7} />
+                    </span>
+                    <span className="text-[10.5px] text-ash">
+                      {doc.badge}
+                    </span>
+                  </div>
+                  <p className="mt-4 font-heading text-[15px] font-medium uppercase leading-[1.15] tracking-[0.02em] text-paper/90">
+                    {doc.title}
+                  </p>
+                  <p className="mt-2 flex-1 text-[11.5px] leading-[1.6] text-ash">{doc.text}</p>
+                  <div className="mt-4 flex items-center justify-between border-t border-line pt-3">
+                    <span className="text-[10.5px] text-ash/70">
+                      {doc.tag}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-medium text-paper/45 transition-colors group-hover:text-acid">
+                      Открыть <ArrowUpRight className="h-3 w-3" />
+                    </span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+
+        <div
+          data-reveal
+          className="mt-8 flex flex-col gap-3 border-t border-line pt-5 text-[11px] text-ash/75 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <p className="flex items-center gap-2">
+            <FileCheck2 className="h-3.5 w-3.5" />
+            Все документы доступны без регистрации
+          </p>
+          <p className="flex items-center gap-2">
+            <Lock className="h-3.5 w-3.5" />
+            Платежи проходят через защищённый шлюз
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================
+   Финальный призыв
+   ============================================================ */
+
+export function FinalCta() {
+  return (
+    <section id="start" className="border-t border-line bg-[#0D0D0E]">
+      <div className="lp-container py-14 sm:py-20">
+        <div className="relative overflow-hidden rounded-[16px] border border-acid/25 bg-[#101210] px-6 py-10 sm:px-10 sm:py-14 lg:px-14">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-acid/[0.08] blur-3xl"
+          />
+          <div className="relative max-w-[760px]">
+            <p className="lp-label">Без отсрочек</p>
+            <h2 className="lp-h2 mt-5">
+              Идеальный момент
+              <br />
+              <span className="lp-mark">не наступит.</span>
+            </h2>
+            <p className="lp-lead mt-5 max-w-[520px]">
+              Следующий понедельник будет таким же, как этот. Начни с двух минут
+              сегодня — и через 30 дней увидишь серию, а не список обещаний.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <a href="#pricing" className="lp-btn lp-btn-acid w-full sm:w-auto">
+                Начать сегодня
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <span className="text-[11.5px] text-ash">
+                14 дней гарантии · отмена в один клик
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1663,7 +1745,7 @@ function SoundToggle() {
       type="button"
       onClick={toggle}
       aria-pressed={enabled}
-      className="inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 text-[11px] text-white/40 transition hover:border-white/25 hover:text-white/70 active:scale-[0.98]"
+      className="inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-[11px] text-paper/45 transition hover:border-paper/30 hover:text-paper/70 active:scale-[0.98]"
     >
       {enabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
       Звуки {enabled ? 'вкл' : 'выкл'}
@@ -1673,80 +1755,93 @@ function SoundToggle() {
 
 export function Footer() {
   return (
-    <footer className="mt-8 border-t border-white/[0.07] bg-black/40">
-      <div className="container-x py-14">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+    <footer className="relative overflow-hidden border-t border-line bg-[#08080A]">
+      <div className="lp-container relative py-14">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_0.8fr_0.9fr_1fr]">
           <div>
             <Link href="/" className="flex items-center gap-2.5" aria-label="ЛВС — на главную">
-              <span className="font-display text-[16px] font-extrabold uppercase leading-none tracking-[0.38em] text-white">
+              <span className="font-heading text-[17px] font-semibold uppercase leading-none tracking-[0.2em] text-paper">
                 ЛВС
               </span>
-              <span className="h-1 w-1 rounded-full bg-neon shadow-[0_0_10px_rgba(0,229,143,0.9)]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-acid" />
             </Link>
-            <p className="mt-4 max-w-[240px] text-[12.5px] leading-relaxed text-white/35">
-              Лучшая Версия Себя — система, которая считает дни за тебя.
+            <p className="mt-4 max-w-[260px] text-[12.5px] leading-[1.7] text-ash">
+              Лучшая Версия Себя — образовательная платформа, которая помогает
+              держать ритм и считать дни за вас.
             </p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-1 text-[10px] text-paper/45">
+                <BadgeCheck className="h-3 w-3 text-acid/60" /> Официальный сервис
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-1 text-[10px] text-paper/45">
+                <Globe2 className="h-3 w-3 text-paper/30" /> KZ · RU
+              </span>
+            </div>
             <div className="mt-5">
               <SoundToggle />
             </div>
           </div>
 
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/30">
+            <p className="font-heading text-[12px] font-medium uppercase tracking-[0.12em] text-paper/70">
               Продукт
             </p>
-            <ul className="mt-4 space-y-2.5 text-[12.5px] text-white/50">
-              <li>
-                <a href="#potential" className="transition hover:text-white">
-                  Возможности
-                </a>
-              </li>
-              <li>
-                <a href="#pricing" className="transition hover:text-white">
-                  Тарифы
-                </a>
-              </li>
-              <li>
-                <a href="#reviews" className="transition hover:text-white">
-                  Отзывы
-                </a>
-              </li>
+            <ul className="mt-4 space-y-2.5 text-[12.5px] text-paper/55">
+              {[
+                { href: '#potential', label: 'Возможности' },
+                { href: '#about', label: 'Система' },
+                { href: '#pricing', label: 'Тарифы' },
+                { href: '#reviews', label: 'Отзывы' },
+                { href: '#faq', label: 'Вопросы' },
+              ].map((item) => (
+                <li key={item.href}>
+                  <a href={item.href} className="transition hover:text-paper">
+                    {item.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/30">
+            <p className="font-heading text-[12px] font-medium uppercase tracking-[0.12em] text-paper/70">
               Документы
             </p>
-            <ul className="mt-4 space-y-2.5 text-[12.5px] text-white/50">
-              <li>
-                <Link href="/terms" className="transition hover:text-white">
-                  Пользовательское соглашение
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="transition hover:text-white">
-                  Политика конфиденциальности
-                </Link>
-              </li>
-              <li>
-                <Link href="/contacts" className="transition hover:text-white">
-                  Контакты
-                </Link>
-              </li>
+            <ul className="mt-4 space-y-2.5 text-[12px] text-paper/55">
+              {[
+                { href: '/terms', label: 'Публичная оферта', icon: FileText },
+                { href: '/terms', label: 'Пользовательское соглашение', icon: ScrollText },
+                { href: '/privacy', label: 'Политика конфиденциальности', icon: ShieldCheck },
+                { href: '/privacy', label: 'Согласие на обработку', icon: Fingerprint },
+                { href: '/contacts', label: 'Реквизиты и контакты', icon: Building2 },
+              ].map((item) => {
+                const Icon = item.icon;
+                return (
+                  <li key={item.label}>
+                    <Link
+                      href={item.href}
+                      className="group inline-flex items-start gap-2 transition hover:text-paper"
+                    >
+                      <Icon className="mt-0.5 h-3.5 w-3.5 shrink-0 text-paper/25 transition group-hover:text-acid/70" />
+                      <span>{item.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/30">
+            <p className="font-heading text-[12px] font-medium uppercase tracking-[0.12em] text-paper/70">
               Связь
             </p>
-            <ul className="mt-4 space-y-3 text-[12.5px] text-white/50">
+            <ul className="mt-4 space-y-3 text-[12.5px] text-paper/55">
               <li>
                 <a
                   href="mailto:hello@lvs.ru"
-                  className="inline-flex items-center gap-2 transition hover:text-white"
+                  className="inline-flex items-center gap-2 transition hover:text-paper"
                 >
+                  <Mail className="h-3.5 w-3.5 text-paper/30" />
                   hello@lvs.ru
                 </a>
               </li>
@@ -1755,23 +1850,76 @@ export function Footer() {
                   href="https://t.me/lvs_key_bot"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 transition hover:text-white"
+                  className="inline-flex items-center gap-2 transition hover:text-paper"
                 >
-                  <TelegramIcon className="h-3.5 w-3.5 text-white/40" />
+                  <TelegramIcon className="h-3.5 w-3.5 text-paper/40" />
                   @lvs_key_bot
                 </a>
               </li>
+              <li>
+                <Link href="/contacts" className="inline-flex items-center gap-2 transition hover:text-paper">
+                  <Headphones className="h-3.5 w-3.5 text-paper/30" />
+                  Поддержка 24/7
+                </Link>
+              </li>
             </ul>
+            <div className="mt-5 rounded-[6px] border border-line bg-paper/[0.02] p-3">
+              <p className="text-[10.5px] text-paper/35">
+                Юридическое лицо
+              </p>
+              <p className="mt-1.5 text-[11px] leading-[1.6] text-paper/45">
+                ЛВС · образовательная платформа. Реквизиты и договор — в разделе
+                «Контакты».
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-white/[0.06] pt-6 text-[11px] text-white/25 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} ЛВС. Все права защищены.</p>
-          <p className="flex items-center gap-1.5">
-            Сделано для тех, кто выбирает себя
-            <span className="h-1 w-1 rounded-full bg-neon/70" />
-          </p>
+        <div className="mt-12 border-t border-line pt-5">
+          <div className="flex flex-wrap gap-2">
+            {[
+              { label: 'Публичная оферта', href: '/terms' },
+              { label: 'Политика конфиденциальности', href: '/privacy' },
+              { label: 'Согласие на обработку', href: '/privacy' },
+              { label: 'Реквизиты', href: '/contacts' },
+            ].map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="rounded-full border border-line px-2.5 py-1 text-[10.5px] text-paper/40 transition hover:border-paper/25 hover:text-paper/70"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-5 flex flex-col gap-3 text-[11px] text-paper/35 sm:flex-row sm:items-center sm:justify-between">
+            <p>© {new Date().getFullYear()} ЛВС. Все права защищены.</p>
+            <div className="flex flex-wrap items-center gap-4">
+              <span className="inline-flex items-center gap-1.5">
+                <ShieldCheck className="h-3 w-3" /> SSL/TLS
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <CreditCard className="h-3 w-3" /> Visa · Mastercard · МИР
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Lock className="h-3 w-3" /> Безопасная оплата
+              </span>
+            </div>
+          </div>
         </div>
+
+        <div className="pointer-events-none mt-10 select-none">
+          <span className="lp-display block text-center text-[clamp(96px,22vw,280px)] leading-[0.86] tracking-[-0.04em] text-paper/[0.055]">
+            ЛВС
+          </span>
+        </div>
+
+        <p className="mt-8 border-t border-line pt-5 text-[10.5px] leading-[1.7] text-paper/25">
+          Используя сайт, вы соглашаетесь с публичной офертой и политикой обработки
+          персональных данных. Сервис не является медицинской или психотерапевтической
+          организацией и не заменяет консультацию специалиста.
+        </p>
       </div>
     </footer>
   );
