@@ -718,7 +718,7 @@ export function Hero() {
                 {['kirill', 'maria', 'alexey', 'olga', 'dmitry'].map((name) => (
                   <img
                     key={name}
-                    src={`/reviews/${name}.jpg`}
+                    src={withBase(`/reviews/${name}.jpg`)}
                     alt=""
                     loading="lazy"
                     className="h-9 w-9 rounded-full border-2 border-[#0B0B0C] object-cover grayscale-[0.2]"
@@ -1148,7 +1148,7 @@ export function Reviews() {
               {['kirill', 'maria', 'olga', 'anna'].map((name) => (
                 <img
                   key={name}
-                  src={`/reviews/${name}.jpg`}
+                  src={withBase(`/reviews/${name}.jpg`)}
                   alt=""
                   loading="lazy"
                   className="h-9 w-9 rounded-full border-2 border-[#0D0D0E] object-cover grayscale-[0.2]"
@@ -1204,7 +1204,7 @@ export function Reviews() {
             >
               <div className="flex items-center gap-4">
                 <img
-                  src={review.photo}
+                  src={withBase(review.photo)}
                   alt={`${review.name}, ${review.meta}`}
                   loading="lazy"
                   className="h-16 w-16 rounded-full border border-line object-cover grayscale-[0.15]"
