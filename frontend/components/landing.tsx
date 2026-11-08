@@ -48,6 +48,10 @@ import { cn } from '@/lib/utils';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
+/* Префикс для статической сборки на GitHub Pages (в обычном приложении пустой) */
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+const withBase = (path: string) => `${BASE_PATH}${path}`;
+
 /* ============================================================
    Звуки: тихие, премиальные, генерируются на месте (Web Audio)
    ============================================================ */
@@ -1539,7 +1543,7 @@ const DOCUMENTS = [
     badge: 'Оферта',
     title: 'Публичная оферта',
     text: 'Условия доступа, тарифы и порядок оплаты.',
-    href: '/terms',
+    href: withBase('/terms'),
     tag: 'Онлайн',
   },
   {
@@ -1547,7 +1551,7 @@ const DOCUMENTS = [
     badge: 'Приватность',
     title: 'Политика конфиденциальности',
     text: 'Какие данные мы собираем и как их защищаем.',
-    href: '/privacy',
+    href: withBase('/privacy'),
     tag: 'Редакция 2026',
   },
   {
@@ -1555,7 +1559,7 @@ const DOCUMENTS = [
     badge: 'Правила',
     title: 'Пользовательское соглашение',
     text: 'Правила использования платформы и аккаунта.',
-    href: '/terms',
+    href: withBase('/terms'),
     tag: 'Онлайн',
   },
   {
@@ -1563,7 +1567,7 @@ const DOCUMENTS = [
     badge: 'Согласие',
     title: 'Обработка данных',
     text: 'Согласие на обработку персональных данных.',
-    href: '/privacy',
+    href: withBase('/privacy'),
     tag: 'Конфиденциально',
   },
   {
@@ -1571,7 +1575,7 @@ const DOCUMENTS = [
     badge: 'Реквизиты',
     title: 'Юридические реквизиты',
     text: 'Данные организации и договорные условия.',
-    href: '/contacts',
+    href: withBase('/contacts'),
     tag: 'По запросу',
   },
   {
@@ -1579,7 +1583,7 @@ const DOCUMENTS = [
     badge: 'Поддержка',
     title: 'Поддержка 24/7',
     text: 'Ответим в течение рабочего дня в Telegram.',
-    href: '/contacts',
+    href: withBase('/contacts'),
     tag: '≈ 15 мин',
   },
 ];
